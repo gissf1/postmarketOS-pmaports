@@ -1,0 +1,67 @@
+
+pkgname=linux-postmarketos-gs101
+pkgver=6.15.2
+pkgrel=0
+pkgdesc="Google gs101 mainline kernel"
+arch="aarch64"
+_carch="arm64"
+_flavor="postmarketos-gs101"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="
+	bash
+	bc
+	bison
+	findutils
+	flex
+	lz4
+	openssl-dev
+	perl
+	util-linux-misc
+	xz
+"
+
+# Source
+_commit="fc85704c3dae5ac1cb3c94045727241cd72871ff"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/gregkh/linux/archive/$_commit.tar.gz
+	$_config
+"
+builddir="$srcdir/linux-$_commit"
+_outdir="out"
+
+prepare() {
+	default_prepare
+	cp "$srcdir/config-$_flavor.$CARCH" .config
+}
+
+build() {
+	unset LDFLAGS
+	make ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	mkdir -p "$pkgdir"/boot
+
+	make install modules_install dtbs_install \
+		ARCH="$_carch" \
+		INSTALL_PATH="$pkgdir"/boot \
+		INSTALL_MOD_PATH="$pkgdir" \
+		INSTALL_MOD_STRIP=1 \
+		INSTALL_DTBS_PATH="$pkgdir"/boot/dtbs
+	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
+
+	install -D "$builddir"/include/config/kernel.release \
+		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+
+	lz4 "$pkgdir"/boot/vmlinux*
+	rename vmlinux vmlinuz "$pkgdir"/boot/vmlinux*.lz4
+}
+
+sha512sums="
+32d7147245a600ebdb909ba98b1848cdf489641c9c2ba1c0a091e53b586a8e752559d7ad804823dbbe75f87206b998824b247187388c1ea0bf3a37750208ee37  linux-postmarketos-gs101-fc85704c3dae5ac1cb3c94045727241cd72871ff.tar.gz
+bc1639a4621b198e1c7787441a4b8cac09a5791fb020cd6da77a9d02811395dd6d457e1835418f1ca7fca897419566f4540502055ee23d2c40b89ee27451809f  config-postmarketos-gs101.aarch64
+"
