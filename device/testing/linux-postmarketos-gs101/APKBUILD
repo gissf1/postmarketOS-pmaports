@@ -10,16 +10,21 @@ url="https://kernel.org"
 license="GPL-2.0-only"
 options="!strip !check !tracedeps pmb:cross-native"
 makedepends="
-	bash
-	bc
-	bison
-	findutils
-	flex
-	lz4
-	openssl-dev
-	perl
-	util-linux-misc
-	xz
+    bison
+    devicepkg-dev
+    findutils
+    flex
+    postmarketos-installkernel
+    openssl-dev
+    perl
+    rsync
+    gzip
+    xz
+    gmp-dev
+    mpc1-dev
+    mpfr-dev
+    lz4
+    zstd
 "
 
 # Source
@@ -27,6 +32,7 @@ _commit="fc85704c3dae5ac1cb3c94045727241cd72871ff"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/gregkh/linux/archive/$_commit.tar.gz
+	arm64-dts-exynos-gs101-bluejay-add-new-board-file.patch
 	$_config
 "
 builddir="$srcdir/linux-$_commit"
@@ -46,7 +52,7 @@ build() {
 package() {
 	mkdir -p "$pkgdir"/boot
 
-	make install modules_install dtbs_install \
+	make Image.lz4 install modules_install dtbs_install \
 		ARCH="$_carch" \
 		INSTALL_PATH="$pkgdir"/boot \
 		INSTALL_MOD_PATH="$pkgdir" \
@@ -56,12 +62,10 @@ package() {
 
 	install -D "$builddir"/include/config/kernel.release \
 		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
-
-	lz4 "$pkgdir"/boot/vmlinux*
-	rename vmlinux vmlinuz "$pkgdir"/boot/vmlinux*.lz4
 }
 
 sha512sums="
 32d7147245a600ebdb909ba98b1848cdf489641c9c2ba1c0a091e53b586a8e752559d7ad804823dbbe75f87206b998824b247187388c1ea0bf3a37750208ee37  linux-postmarketos-gs101-fc85704c3dae5ac1cb3c94045727241cd72871ff.tar.gz
-bc1639a4621b198e1c7787441a4b8cac09a5791fb020cd6da77a9d02811395dd6d457e1835418f1ca7fca897419566f4540502055ee23d2c40b89ee27451809f  config-postmarketos-gs101.aarch64
+c6a4c37d094836337e71702c0aa9fed6dd590dd82140cf4ef6cf3e0841d0c5ab2cbd12a6fd0b6cdad3f521c034c19d8473f365713149ddfb8a34e9a24cc76110  arm64-dts-exynos-gs101-bluejay-add-new-board-file.patch
+f5b7baf5aef5dc85cf832553e09f3e12d086f3460a6323d5b51a4b76e105c2f54c22a46084a6e22ad45f4e10d4ebae02c5e587f04f349365d221bd337f3d3881  config-postmarketos-gs101.aarch64
 "
