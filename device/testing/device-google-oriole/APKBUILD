@@ -11,6 +11,7 @@ depends="
 	android-tools
 	linux-postmarketos-gs101
 	postmarketos-base
+	soc-google-gs101
 "
 makedepends="devicepkg-dev"
 source="
