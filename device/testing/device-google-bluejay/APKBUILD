@@ -6,7 +6,7 @@ pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
-options="!check !archcheck"
+options="!check !archcheck pmb:kconfigcheck-community"
 depends="
 	android-tools
 	linux-postmarketos-gs101
