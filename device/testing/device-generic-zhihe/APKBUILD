@@ -27,11 +27,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {
@@ -44,19 +44,19 @@ nonfree_firmware() {
 kernel_ufi001c() {
 	pkgdesc="UFI103S / UFI-001C(B) / UFI003"
 	depends="linux-postmarketos-qcom-msm8916"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_uf896() {
 	pkgdesc="UF896"
 	depends="linux-postmarketos-qcom-msm8916"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_uz801() {
 	pkgdesc="UZ801 V3.0"
 	depends="linux-postmarketos-qcom-msm8916"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

@@ -29,11 +29,11 @@ for pkg in $_substitutes; do replaces="$replaces $pkg-kernel-mainline $pkg-kerne
 for pkg in $replaces; do provides="$provides $pkg=$pkgver-r$pkgrel"; done
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

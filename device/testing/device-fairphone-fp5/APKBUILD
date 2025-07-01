@@ -40,11 +40,11 @@ source="
 	ucm/fp5.conf
 	"
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/81-libssc-fairphone-fp5.rules \
 		"$pkgdir"/usr/lib/udev/rules.d/81-libssc-fairphone-fp5.rules

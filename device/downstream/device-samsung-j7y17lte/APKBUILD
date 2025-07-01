@@ -41,11 +41,11 @@ source="
 # (For downstream kernel, mainline does not have audio yet and I'd like to run Phosh)
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 NetworkManager-conf.d-wlan0-unmanaged.conf "$pkgdir"/usr/lib/NetworkManager/conf.d/swlan0-unmanaged.conf
 	install -Dm755 usr-libexec-samsungipcd-voicecall.sh "$pkgdir"/usr/libexec/samsungipcd/voicecall.sh
 	install -Dm644 usr-share-alsa-ucm2-conf.d-Universal7870-I-HiFi.conf "$pkgdir"/usr/share/alsa/ucm2/conf.d/Universal7870-I/HiFi.conf

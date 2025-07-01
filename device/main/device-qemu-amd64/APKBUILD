@@ -28,28 +28,28 @@ source="
 options="!check !archcheck"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_none() {
 	pkgdesc="No kernel (does not boot! can be used during pmbootstrap testing to save time)"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_virt() {
 	pkgdesc="Alpine Virt kernel (minimal, no audio/mouse/network)"
 	depends="linux-virt"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_lts() {
 	pkgdesc="Alpine LTS kernel (recommended)"
 	depends="linux-lts linux-firmware-none"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_stable() {
@@ -57,7 +57,7 @@ kernel_stable() {
 	depends="linux-stable linux-firmware-none"
 	provides="$pkgname-kernel-edge=$pkgver-r$pkgrel"
 	replaces="$pkgname-kernel-edge"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

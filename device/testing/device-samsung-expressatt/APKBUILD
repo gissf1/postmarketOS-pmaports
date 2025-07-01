@@ -17,30 +17,30 @@ subpackages="
 source="deviceinfo"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_next() {
 	pkgdesc="Unstable next kernel (linux-next)"
 	depends="linux-next"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_stable() {
 	pkgdesc="Stable kernel from Alpine Linux (linux-stable)"
 	depends="linux-stable"
 	provides="$pkgname-kernel-edge=$pkgver-r$pkgrel"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_lts() {
 	pkgdesc="Long term support (LTS) kernel from Alpine Linux (linux-lts)"
 	depends="linux-lts"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

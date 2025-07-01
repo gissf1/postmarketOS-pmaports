@@ -20,11 +20,11 @@ source="deviceinfo 90-android-touch-dev.rules profile.sh"
 options="!check !archcheck"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/90-android-touch-dev.rules \
 		"$pkgdir"/etc/udev/rules.d/90-android-touch-dev.rules
 	install -Dm644 "$srcdir"/profile.sh \

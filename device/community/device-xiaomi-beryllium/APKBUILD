@@ -32,11 +32,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {
@@ -66,13 +66,13 @@ nonfree_firmware_openrc() {
 kernel_tianma() {
 	pkgdesc="Tianma Panel. To know which panel your device use and the status of the port, Visit the Poco F1 wiki page: https://wiki.postmarketos.org/wiki/Xiaomi_Poco_F1_(xiaomi-beryllium)"
 	depends="linux-postmarketos-qcom-sdm845"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_ebbg() {
 	pkgdesc="EBBG Panel. To know which panel your device use and the status of the port, Visit the Poco F1 wiki page: https://wiki.postmarketos.org/wiki/Xiaomi_Poco_F1_(xiaomi-beryllium)"
 	depends="linux-postmarketos-qcom-sdm845"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

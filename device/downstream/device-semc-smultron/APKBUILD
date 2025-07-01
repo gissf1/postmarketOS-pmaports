@@ -12,7 +12,7 @@ makedepends="devicepkg-dev"
 source="deviceinfo fb.modes directfbrc"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
@@ -20,7 +20,7 @@ package() {
 		"$pkgdir"/etc/fb.modes
 	install -Dm644 "$srcdir"/directfbrc \
 		"$pkgdir"/etc/directfbrc
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

@@ -3,7 +3,7 @@
 pkgname=device-fairphone-fp4
 pkgdesc="Fairphone 4"
 pkgver=5
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -43,11 +43,11 @@ source="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/81-libssc-fairphone-fp4.rules \
 		"$pkgdir"/usr/lib/udev/rules.d/81-libssc-fairphone-fp4.rules

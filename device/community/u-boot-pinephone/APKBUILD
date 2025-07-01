@@ -3,7 +3,7 @@
 # U-boot with patches to make the PinePhone boot faster and have control over the ddr clock speed
 pkgname=u-boot-pinephone
 pkgver=2023.01
-pkgrel=4
+pkgrel=5
 pkgdesc="U-Boot bootloader for the PINE64 PinePhone"
 url="https://source.denx.de/u-boot"
 arch="aarch64"
@@ -44,7 +44,7 @@ build() {
 	for freq in $_frequencies; do
 		mkdir -p "$BUILD_DIR-$freq"
 		sed -rie "s/^(CONFIG_DRAM_CLK=).*$/CONFIG_DRAM_CLK=$freq/" configs/pinephone_defconfig
-		cat configs/pinephone_defconfig | grep CONFIG_DRAM_CLK
+		grep CONFIG_DRAM_CLK < configs/pinephone_defconfig
 		make O="$BUILD_DIR-$freq" HOSTCC=gcc ARCH=arm pinephone_defconfig
 		make O="$BUILD_DIR-$freq" HOSTCC=gcc ARCH=arm all
 		sha512sum -b "$BUILD_DIR-$freq/u-boot-sunxi-with-spl.bin" > "$BUILD_DIR-$freq/u-boot-sunxi-with-spl.bin.sha512"

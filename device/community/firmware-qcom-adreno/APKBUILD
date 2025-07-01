@@ -1,6 +1,6 @@
 pkgname=firmware-qcom-adreno
 pkgver=20241110
-pkgrel=0
+pkgrel=1
 pkgdesc="Qualcomm Adreno GPU firmware from linux-firmware"
 url="https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/"
 arch="aarch64 armv7"
@@ -26,10 +26,10 @@ package() {
 }
 
 _gpu() {
-	local gpu=${subpkgname##$pkgname-}
+	local gpu="${subpkgname##"$pkgname"-}"
 	pkgdesc="$pkgdesc ($gpu)"
 
-	install -Dm644 "$builddir"/qcom/$gpu* -t "$subpkgdir/$_fwdir"/
+	install -Dm644 "$builddir"/qcom/"$gpu"* -t "$subpkgdir/$_fwdir"/
 
 	# Drop _zap shader firmware because that is typically signed
 	# and therefore device-specific.

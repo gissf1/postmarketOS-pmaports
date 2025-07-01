@@ -33,11 +33,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm755 "$srcdir"/led.start "$pkgdir"/etc/local.d/led.start
 	install -Dm755 "$srcdir"/led.stop "$pkgdir"/etc/local.d/led.stop
 

@@ -26,14 +26,14 @@ source="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 	mkdir -p "$builddir"
 	mipi-dbi-cmd "$builddir"/"$_panel".bin \
 			"$srcdir"/"$_panel".txt
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	# Package display init sequence
 	install -Dm644 "$builddir"/"$_panel".bin -t \
 			"$pkgdir"/lib/firmware/

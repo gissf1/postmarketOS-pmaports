@@ -37,12 +37,12 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
 	replaces="$pkgname-nonfree-firmware"
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/81-libssc-oneplus-enchilada.rules \
 		-t "$pkgdir"/usr/lib/udev/rules.d/

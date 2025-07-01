@@ -24,11 +24,11 @@ source="
 options="!check !archcheck"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/99-touch.rules \
 		"$pkgdir"/etc/udev/rules.d/99-touch.rules
 	install -D -m644 "$srcdir"/brcmfmac4339-sdio.txt \

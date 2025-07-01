@@ -19,11 +19,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 sha512sums="
 d95408c6f66bd6b0fee985bce0ac618b21b4ea53d07028637afc71c061ad60981f77b131e2896c306cd525341a129e7525bd7a88e8eb255afd6f3e38c147ba01  deviceinfo

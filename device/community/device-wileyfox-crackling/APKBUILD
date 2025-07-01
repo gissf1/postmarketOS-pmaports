@@ -27,11 +27,11 @@ replaces="$pkgname-kernel-mainline $pkgname-kernel-mainline-modem"
 for pkg in $replaces; do provides="$provides $pkg=$pkgver-r$pkgrel"; done
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/10-crackling-proximity.rules \
 		"$pkgdir"/usr/lib/udev/rules.d/10-crackling-proximity.rules

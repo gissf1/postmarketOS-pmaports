@@ -20,11 +20,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm544 "$srcdir"/fb.modes "$pkgdir"/etc/fb.modes
 	install -Dm755 "$srcdir"/sony-taoshan-screen-enlightener "$pkgdir"/usr/sbin/sony-taoshan-screen-enlightener
 	install -Dm644 "$srcdir"/40-boot-logo.files  "$pkgdir"/usr/share/mkinitfs/files/40-boot-logo.files

@@ -1,7 +1,7 @@
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=firmware-pine64-rtl8723bt
 pkgver=0_git20200705
-pkgrel=3
+pkgrel=4
 _commit="8840b1052b4ee426f348cb35e4994c5cafc5fbbd"
 pkgdesc="Firmware for rtl8723cs"
 # Also available at https://megous.com/git/linux-firmware/tree/rtl_bt
@@ -43,6 +43,8 @@ package() {
 	#
 	# - https://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git/commit/?id=ed9c1349f8ebae720f3572ad3e74af59bfe345d7
 
+	# More bins will exist in the future, so this loop is here as placeholder.
+	# shellcheck disable=SC2043
 	for f in rtl_bt/rtl8723cs_xx_config.bin; do
 		install -Dm644 "$f" "$pkgdir/lib/firmware/$f"
 	done

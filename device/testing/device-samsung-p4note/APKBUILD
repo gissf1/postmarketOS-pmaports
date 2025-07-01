@@ -21,11 +21,11 @@ source="
 	audio/p4note.conf"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/HiFi.conf \
 		-t "$pkgdir"/usr/share/alsa/ucm2/conf.d/p4note

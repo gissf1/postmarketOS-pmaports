@@ -25,11 +25,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {
@@ -49,13 +49,13 @@ nonfree_firmware() {
 kernel_extlinux() {
 	pkgdesc="Use lk2nd to boot via extlinux.conf"
 	depends="linux-postmarketos-qcom-msm8916"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_efi() {
 	pkgdesc="Use U-Boot to boot via EFI"
 	depends="linux-postmarketos-qcom-msm8916 systemd-boot"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

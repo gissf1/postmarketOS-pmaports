@@ -3,7 +3,7 @@
 pkgname=soc-qcom-msm8916
 pkgdesc="Common package for Qualcomm MSM8916 devices"
 pkgver=23
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="BSD-3-Clause"
 arch="aarch64 armv7"
@@ -40,7 +40,7 @@ ucm() {
 	provides="alsa-ucm-conf"
 	provider_priority=1
 
-	cd "$srcdir/alsa-ucm-conf-$_ucm_commit"
+	cd "$srcdir/alsa-ucm-conf-$_ucm_commit" || exit 1
 	mkdir -p "$subpkgdir"/usr/share/alsa
 	cp -r ucm2 "$subpkgdir"/usr/share/alsa
 }

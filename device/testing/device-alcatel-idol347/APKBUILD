@@ -19,11 +19,11 @@ subpackages="
 _pmb_select="soc-qcom-msm8916-rproc"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -D -m644 "$srcdir"/pointercal "$pkgdir"/etc/pointercal
 }
 

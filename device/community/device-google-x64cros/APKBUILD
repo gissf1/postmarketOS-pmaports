@@ -45,11 +45,11 @@ _pmb_recommends="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_stable() {
@@ -57,13 +57,13 @@ kernel_stable() {
 	depends="linux-stable"
 	provides="$pkgname-kernel-edge=$pkgver-r$pkgrel"
 	replaces="$pkgname-kernel-edge"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_lts() {
 	pkgdesc="Alpine LTS kernel"
 	depends="linux-lts"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 firmware_amd() {

@@ -12,12 +12,12 @@ makedepends="devicepkg-dev"
 source="deviceinfo fb.modes"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
 	install -D -m644 "$srcdir"/fb.modes "$pkgdir"/etc/fb.modes
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

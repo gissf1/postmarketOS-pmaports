@@ -2,7 +2,7 @@
 # Maintainer: Dzmitry Sankouski <dsankouski@gmail.com>
 pkgname=u-boot-starqltechn
 pkgver=2023.01_rc2
-pkgrel=3
+pkgrel=4
 pkgdesc="U-Boot bootloader for the Samsung SM-G9600 starqltechn"
 url="https://source.denx.de/u-boot"
 arch="aarch64"
@@ -37,8 +37,8 @@ build() {
 }
 
 package() {
-	install -D -m644 $builddir/"u-boot.bin" \
-		"$pkgdir/usr/share/u-boot/starqltechn/u-boot.bin"
+	install -D -m644 "$builddir"/"u-boot.bin" \
+		"${pkgdir}/usr/share/u-boot/starqltechn/u-boot.bin"
 }
 
 sha512sums="

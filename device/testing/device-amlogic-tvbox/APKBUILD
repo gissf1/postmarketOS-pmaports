@@ -30,11 +30,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 aml_boot_prep() {
@@ -53,27 +53,27 @@ kernel_p201() {
 	pkgdesc="Kernel for Amlogic P201-based TV box (S905)"
 	depends="linux-postmarketos-amlogic u-boot-amlogic-s905-tv"
 	aml_boot_prep "meson-gxbb-p201.dtb" "$subpkgdir"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_p212() {
 	pkgdesc="Kernel for Amlogic P212-based TV box (S905X)"
 	depends="linux-postmarketos-amlogic u-boot-amlogic-s905x-tv"
 	aml_boot_prep "meson-gxl-s905x-p212.dtb" "$subpkgdir"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_p241() {
 	pkgdesc="Kernel for Amlogic P241-based TV box (S805X/S805Y)"
 	depends="linux-postmarketos-amlogic u-boot-amlogic-s905x-tv"
 	aml_boot_prep "meson-gxl-s805x-p241.dtb" "$subpkgdir"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_ugoos_am3() {
 	pkgdesc="Kernel for Ugoos AM3 (S912)"
 	depends="linux-postmarketos-amlogic"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_videostrong_kii_pro() {
@@ -81,14 +81,14 @@ kernel_videostrong_kii_pro() {
 	depends="linux-postmarketos-amlogic u-boot-amlogic-s905-tv"
 	_pmb_recommends="firmware-videostrong-kii-pro"
 	aml_boot_prep "meson-gxbb-kii-pro.dtb" "$subpkgdir"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_xiaomi_aquaman() {
 	pkgdesc="Kernel for Xiaomi Mi TV Stick (S805Y)"
 	depends="linux-postmarketos-amlogic soc-amlogic-s905-boot linux-firmware-meson linux-firmware-brcm linux-firmware-rtl_bt"
 	aml_boot_prep "meson-gxl-s805y-xiaomi-aquaman.dtb" "$subpkgdir"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

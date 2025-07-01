@@ -12,11 +12,11 @@ makedepends="devicepkg-dev"
 source="deviceinfo modules-initfs grub.cfg"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	mkdir -p "$pkgdir"/boot/grub/
 	install -D -m644 "$srcdir"/grub.cfg \
 		"$pkgdir"/boot/grub/grub.cfg

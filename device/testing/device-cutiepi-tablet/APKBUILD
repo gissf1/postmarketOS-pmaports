@@ -26,12 +26,12 @@ source="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 	dtc -@ -I dts -O dtb -o mpu6050-i2c5.dtbo mpu6050-i2c5-overlay.dts
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/config.txt "$pkgdir"/boot/config.txt
 	install -Dm644 "$srcdir"/usercfg.txt "$pkgdir"/boot/usercfg.txt
 	install -Dm644 "$srcdir"/cmdline.txt "$pkgdir"/boot/cmdline.txt

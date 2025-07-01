@@ -25,11 +25,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/99-google-trogdor-accel.rules\
 			"$pkgdir"/usr/lib/udev/rules.d/99-google-trogdor-accel.rules
 }

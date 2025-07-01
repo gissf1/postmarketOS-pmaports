@@ -30,11 +30,11 @@ source="
 "
 replaces="alsa-ucm-conf"
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/pxa-88pm805-dkb-hifi.conf \
 		-t "$pkgdir"/usr/share/alsa/ucm2/pxa-88pm805-dkb-hifi
 	install -Dm644 "$srcdir"/HiFi.conf \

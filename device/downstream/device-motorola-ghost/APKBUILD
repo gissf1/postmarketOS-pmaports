@@ -11,11 +11,11 @@ depends="postmarketos-base linux-motorola-ghost mkbootimg msm-fb-refresher"
 makedepends="devicepkg-dev"
 source="deviceinfo"
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

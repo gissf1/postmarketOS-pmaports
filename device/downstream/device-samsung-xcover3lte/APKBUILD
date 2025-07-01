@@ -18,11 +18,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 -t "$pkgdir"/usr/share/alsa/ucm2/conf.d/map_asoc \
 		"$srcdir"/HiFi.conf \

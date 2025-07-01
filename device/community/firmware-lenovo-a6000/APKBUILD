@@ -2,7 +2,7 @@
 # Co-Maintainer: Minecrell <minecrell@minecrell.net>
 pkgname=firmware-lenovo-a6000
 pkgver=1
-pkgrel=2
+pkgrel=3
 pkgdesc="Firmware for Lenovo A6000"
 url="https://github.com/jenneron/vendor_lenovo_a6000"
 subpackages="$pkgname-wcnss-nv:wcnss_nv"
@@ -21,7 +21,7 @@ package() {
 
 wcnss_nv() {
 	pkgdesc="Lenovo a6000 WiFi/BT firmware configuration"
-	cd "$srcdir/vendor_lenovo_a6000-$_commit"
+	cd "$srcdir/vendor_lenovo_a6000-$_commit" || exit 1
 	install -Dm644 WCNSS_qcom_wlan_nv.bin -t "$subpkgdir/$_fwdir"/wlan/prima
 }
 

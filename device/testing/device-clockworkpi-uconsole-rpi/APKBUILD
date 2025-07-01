@@ -71,7 +71,7 @@ _dtso="
 provides="device-clockworkpi-uconsole-cm4=$pkgver-r$pkgrel"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
 	local _modules=
 	local _objects=
@@ -105,7 +105,7 @@ build() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/usercfg.txt "$pkgdir"/boot/usercfg.txt
 	install -Dm644 "$srcdir"/95-vchiq-permissions.rules \
 		"$pkgdir"/usr/lib/udev/rules.d/95-vchiq-permissions.rules

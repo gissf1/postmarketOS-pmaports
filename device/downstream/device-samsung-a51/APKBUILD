@@ -24,11 +24,11 @@ source="
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Disable swlan0 (additionally x0wlan0) & p2p0 management
 	install -Dm644 NetworkManager-conf.d-swlan0-p2p0-unmanaged.conf "$pkgdir"/usr/lib/NetworkManager/conf.d/swlan0-p2p0-unmanaged.conf

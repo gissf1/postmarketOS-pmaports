@@ -32,14 +32,14 @@ source="
 subpackages="$pkgname-phosh"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
 	cat "/boot/bootshim" "/usr/share/u-boot/grandpplte/u-boot.bin" \
 		> "$startdir/u-boot-shimmed.bin"
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	mkdir -p "$pkgdir/usr/share/u-boot/grandpplte/"
 	install -Dm644 "$startdir/u-boot-shimmed.bin" \

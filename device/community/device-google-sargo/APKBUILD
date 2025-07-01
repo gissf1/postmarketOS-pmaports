@@ -3,7 +3,7 @@
 pkgname=device-google-sargo
 pkgdesc="Google Pixel 3a"
 pkgver=11
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -36,12 +36,12 @@ source="
 subpackages="$pkgname-openrc"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
 	replaces="$pkgname-nonfree-firmware"
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Sensors depend on ADSP firmware and the sensors registry served over FastRPC.
 	install -Dm644 "$srcdir"/hexagonrpcd.confd \

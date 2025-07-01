@@ -28,11 +28,11 @@ source="
 	modules-initfs
 	"
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/00-mesa.sh \
 		"$pkgdir"/etc/profile.d/00-mesa.sh

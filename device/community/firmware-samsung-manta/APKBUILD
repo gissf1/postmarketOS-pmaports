@@ -2,7 +2,7 @@
 # Co-Maintainer: Alexandre Marquet <tb@a-marquet.fr>
 pkgname=firmware-samsung-manta
 pkgver=3
-pkgrel=0
+pkgrel=1
 pkgdesc="Firmware for Samsung Manta (Nexus 10)"
 url="https://developers.google.com/android/drivers#mantalmy49j"
 arch="armv7"
@@ -18,7 +18,7 @@ source="
 "
 
 package() {
-	cd "$srcdir"
+	cd "$srcdir" || exit 1
 
 	# Wifi
 	install -Dm644 "brcmfmac43241b0-sdio.samsung,nexus10-manta.txt" \

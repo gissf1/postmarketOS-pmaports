@@ -3,7 +3,7 @@
 pkgname=device-asus-me176c
 pkgdesc="ASUS MeMO Pad 7 (ME176C(X))"
 pkgver=7
-pkgrel=0
+pkgrel=1
 _commit=3155254999ac36c3051a2118c415de25a072c0f6
 url="https://postmarketos.org"
 license="MIT"
@@ -35,9 +35,9 @@ subpackages="
 builddir="$srcdir/linux-me176c-$_commit"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
-	cd factory
+	cd factory || exit
 	abuild-meson . output \
 		-Dsystemd=false \
 		-Dopenrc=true
@@ -45,7 +45,7 @@ build() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/sof-workaround.conf \
 		"$pkgdir"/etc/modprobe.d/sof-workaround.conf
 }
@@ -53,7 +53,7 @@ package() {
 factory() {
 	pkgdesc="WiFi/BT MAC address loader"
 	depends="bluez-btmgmt"
-	cd "$builddir"/factory
+	cd "$builddir"/factory || exit
 	DESTDIR="$subpkgdir" meson install -C output
 }
 
