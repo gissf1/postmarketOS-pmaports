@@ -1,0 +1,42 @@
+# Contributor: Dzmitry Sankouski <dsankouski@gmail.com>
+# Maintainer: Dzmitry Sankouski <dsankouski@gmail.com>
+pkgname=droid-juicer
+pkgver=0.4.0
+pkgrel=0
+pkgdesc="Tool for extracting firmware files from Android devices"
+url="https://gitlab.com/mobian1/droid-juicer.git"
+arch="aarch64" # no support for other architectures devices yet
+license="MIT"
+depends="!msm-firmware-loader"
+makedepends="cargo cargo-auditable clang19-libclang linux-headers"
+install="$pkgname.post-deinstall $pkgname-openrc.post-install $pkgname-openrc.post-deinstall"
+options="!check"
+subpackages="$pkgname-openrc"
+source="
+	https://gitlab.com/mobian1/droid-juicer/-/archive/$pkgver/droid-juicer-$pkgver.tar.gz
+	droid-juicer.initd
+	"
+
+prepare() {
+	default_prepare
+
+	cargo fetch --target="$CTARGET"
+}
+
+build() {
+	cargo auditable build --release --frozen
+}
+
+package() {
+	install -m755 -D "$builddir"/target/release/"$pkgname" \
+		"$pkgdir"/usr/bin/"$pkgname"
+	install -m755 -D "$builddir"/configs/* \
+		-t "$pkgdir"/usr/share/droid-juicer/configs
+	install -m755 -D "$srcdir"/"$pkgname".initd \
+		"$pkgdir"/etc/init.d/"$pkgname"
+}
+
+sha512sums="
+425df616ee6908d0a91d1aed26f27db6ab687af95d185f0f37564daac0a1fa20d307b356048b38cebfaeae7fa30b66494ef76f9057eacc32e503315b3485cb15  droid-juicer-0.4.0.tar.gz
+422149b05c1239ec6e86663eb5beb1c14eacce12c7284b253661fb169644e7fd49ea2199c6a104c5ead3951c4ae523d8f6e067008c0635ec26a60409bffaba23  droid-juicer.initd
+"
