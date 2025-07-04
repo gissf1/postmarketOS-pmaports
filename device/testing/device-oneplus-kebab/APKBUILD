@@ -23,13 +23,13 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
 	dtc -O dtb -o "$srcdir/dtbo.img" -I dts "$srcdir/sm8250-oneplus-kebab-empty.dts"
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir/dtbo.img" "$pkgdir/boot/dtbo.img"
 }

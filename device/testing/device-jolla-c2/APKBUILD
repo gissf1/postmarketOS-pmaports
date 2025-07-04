@@ -28,14 +28,14 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
 	# Generate a dummy initramfs for the chainloadable U-Boot image
 	fallocate -l 4k dummy-initramfs
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/pulse-jolla-c2.conf \
 		"$pkgdir"/etc/pulse/daemon.conf.d/89-jolla-c2.conf

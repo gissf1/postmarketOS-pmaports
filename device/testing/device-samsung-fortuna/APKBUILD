@@ -38,11 +38,11 @@ done
 _pmb_select="soc-qcom-msm8916-rproc"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_fortuna3g() {
@@ -54,7 +54,7 @@ kernel_fortuna3g() {
 	replaces="$_old_pkgname"
 	provides="$_old_pkgname=$pkgver-r$pkgrel"
 
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_gprimeltecan() {
@@ -66,7 +66,7 @@ kernel_gprimeltecan() {
 	replaces="$_old_pkgname"
 	provides="$_old_pkgname=$pkgver-r$pkgrel"
 
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_grandprimelte() {
@@ -78,7 +78,7 @@ kernel_grandprimelte() {
 	replaces="$_old_pkgname"
 	provides="$_old_pkgname=$pkgver-r$pkgrel"
 
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 nonfree_firmware() {

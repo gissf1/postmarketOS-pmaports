@@ -18,11 +18,11 @@ source="deviceinfo 90-android-touch-dev.rules wpa_supplicant.conf pointercal"
 options="!check !archcheck"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -D -m644 "$srcdir"/wpa_supplicant.conf \
 		"$pkgdir"/etc/wpa_supplicant/wpa_supplicant.conf
 	install -D -m644 "$srcdir"/90-android-touch-dev.rules \
@@ -34,13 +34,13 @@ package() {
 kernel_mainline_old() {
 	pkgdesc="Old 4.11 mainline kernel, GPU works somehow"
 	depends="linux-asus-flo"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_mainline() {
 	pkgdesc="linux-next kernel, install only for development!"
 	depends="linux-postmarketos-qcom-apq8064"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 nonfree_firmware() {

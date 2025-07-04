@@ -20,7 +20,7 @@ _commit="42ac93dcfbbb8a08c2bdc02e19f96eb35a81891a"
 source="deviceinfo modules-initfs uboot-script.cmd install-rootfs-hdd.sh"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 	mkimage \
 		-A arm \
 		-O linux \
@@ -34,7 +34,7 @@ build() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/boot.scr \
 		"$pkgdir"/boot/boot.scr
 }

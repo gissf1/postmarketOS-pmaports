@@ -37,11 +37,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	# device-specific alsa ucm conf
 	install -Dm644 "$srcdir/q706f.conf" \
 		"$pkgdir/usr/share/alsa/ucm2/Lenovo/q706f/q706f.conf"

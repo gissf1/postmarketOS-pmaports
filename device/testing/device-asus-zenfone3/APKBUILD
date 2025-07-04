@@ -28,23 +28,23 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_ze520kl() {
 	depends="linux-postmarketos-qcom-msm8953"
 	pkgdesc="Asus Zenfone 3 (ZE520KL)"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_ze552kl() {
 	depends="linux-postmarketos-qcom-msm8953"
 	pkgdesc="Asus Zenfone 3 (ZE552KL)"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

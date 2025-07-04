@@ -13,11 +13,11 @@ subpackages="$pkgname-openrc"
 source="deviceinfo modules-initfs config.txt usercfg.txt 95-vchiq-permissions.rules"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/config.txt "$pkgdir"/boot/config.txt
 	install -Dm644 "$srcdir"/usercfg.txt "$pkgdir"/boot/usercfg.txt
 	install -Dm644 "$srcdir"/95-vchiq-permissions.rules \

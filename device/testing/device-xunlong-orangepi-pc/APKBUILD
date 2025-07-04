@@ -17,7 +17,7 @@ makedepends="devicepkg-dev"
 source="deviceinfo"
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

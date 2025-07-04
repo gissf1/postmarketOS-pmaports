@@ -42,7 +42,7 @@ replaces="
 "
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

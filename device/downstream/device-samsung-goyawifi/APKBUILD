@@ -33,11 +33,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Add module rules for Wi-Fi (mbt8xxx kernel panic)
 	install -D -m644 "$srcdir"/goyawifi.conf \

@@ -23,11 +23,11 @@ source="
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	mkdir -p "$pkgdir/usr/share/u-boot/jamaica"
 	install -D -m644 "$srcdir/boot-image.its" \
 		"$pkgdir/usr/share/u-boot/jamaica"

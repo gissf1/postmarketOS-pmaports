@@ -3,7 +3,7 @@
 # a driver for the display and supports efi loading operating systems
 pkgname=u-boot-pinebookpro
 pkgver=2020.07
-pkgrel=5
+pkgrel=6
 pkgdesc="u-boot bootloader for the rk3399"
 url="https://gitlab.denx.de/u-boot/u-boot"
 arch="aarch64"
@@ -44,8 +44,8 @@ build() {
 	export BL31="/usr/share/arm-trusted-firmware/rk3399/bl31.elf"
 	export BUILD_DIR="$builddir"/build
 	mkdir -p "$BUILD_DIR"
-	make O="$BUILD_DIR" HOSTCC=gcc ARCH=arm LOGO_BMP=$srcdir/pine64.bmp pinebook-pro-rk3399_defconfig
-	make O="$BUILD_DIR" HOSTCC=gcc ARCH=arm LOGO_BMP=$srcdir/pine64.bmp all
+	make O="$BUILD_DIR" HOSTCC=gcc ARCH=arm LOGO_BMP="$srcdir"/pine64.bmp pinebook-pro-rk3399_defconfig
+	make O="$BUILD_DIR" HOSTCC=gcc ARCH=arm LOGO_BMP="$srcdir"/pine64.bmp all
 
 	mkimage -n rk3399 -T rkspi -d build/tpl/u-boot-tpl-dtb.bin:build/spl/u-boot-spl-dtb.bin spl.bin
 	dd if=spl.bin bs=512K conv=sync of=u-boot.spiflash.bin

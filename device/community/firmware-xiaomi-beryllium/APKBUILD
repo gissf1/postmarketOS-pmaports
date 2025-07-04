@@ -2,7 +2,7 @@
 
 pkgname=firmware-xiaomi-beryllium
 pkgver=8
-pkgrel=0
+pkgrel=1
 pkgdesc="Firmware for Xiaomi Poco F1"
 url="https://gitlab.com/sdm845-mainline/firmware-xiaomi-beryllium"
 arch="aarch64"
@@ -21,7 +21,7 @@ subpackages="$pkgname-sensors:firmware_sensors"
 
 package() {
 	while IFS="" read -r _i || [ -n "$_i" ]; do
-		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		[ ! -d "$(dirname "$_i")" ] && mkdir -p "$(dirname "$_i")"
 		install -Dm644 "$srcdir/$pkgname-$_commit/$_i" "$pkgdir/$_i"
 	done < "$srcdir/firmware.files"
 }
@@ -33,7 +33,7 @@ firmware_sensors() {
 	mkdir "$subpkgdir"
 
 	while IFS="" read -r _i || [ -n "$_i" ]; do
-		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		[ ! -d "$(dirname "$_i")" ] && mkdir -p "$(dirname "$_i")"
 		install -Dm644 "$srcdir/$pkgname-$_commit/$_i" "$pkgdir/$_i"
 	done < "$srcdir/sensor.files"
 }

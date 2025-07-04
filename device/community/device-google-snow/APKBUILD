@@ -29,11 +29,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Alsa UCM configs
 	install -Dm644 "$srcdir"/Snow-I2S-MAX98090.conf \

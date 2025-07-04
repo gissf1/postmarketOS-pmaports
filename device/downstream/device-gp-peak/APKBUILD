@@ -16,11 +16,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm755 "$srcdir"/$pkgname.start "$pkgdir"/etc/local.d/$pkgname.start
 	install -Dm644 "$srcdir"/fb.modes "$pkgdir"/etc/fb.modes

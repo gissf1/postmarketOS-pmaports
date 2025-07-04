@@ -59,7 +59,7 @@ _drivers="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 
 	local _modules=
 	local _objects=
@@ -94,7 +94,7 @@ x11() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# merge dtbos with soc dtb for uconsole
 	mkdir -p "$pkgdir"/boot/dtbs/rockchip

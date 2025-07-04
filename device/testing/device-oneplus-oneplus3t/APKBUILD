@@ -31,11 +31,11 @@ source="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/10-local-powersave.rules \
 		-t "$pkgdir"/usr/lib/udev/rules.d
@@ -66,13 +66,13 @@ nonfree_firmware_openrc() {
 kernel_s6e3fa3() {
 	pkgdesc="Samsung S6E3FA3 Panel. To find out which panel your device uses run cat /proc/cmdline in TWRP terminal"
 	depends="linux-postmarketos-qcom-msm8996"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_s6e3fa5() {
 	pkgdesc="Samsung S6E3FA5 Panel. To find out which panel your device uses run cat /proc/cmdline in TWRP terminal"
 	depends="linux-postmarketos-qcom-msm8996"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 phosh() {

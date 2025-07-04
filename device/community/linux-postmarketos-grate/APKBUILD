@@ -5,7 +5,7 @@
 
 pkgname=linux-postmarketos-grate
 pkgver=6.12.5
-pkgrel=1
+pkgrel=2
 pkgdesc="Linux kernel with experimental patches for Tegra"
 arch="armv7"
 url="https://gitlab.com/grate-driver/linux"
@@ -45,7 +45,7 @@ package() {
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+		"$pkgdir"/usr/share/kernel/"$_flavor"/kernel.release
 }
 
 sha512sums="

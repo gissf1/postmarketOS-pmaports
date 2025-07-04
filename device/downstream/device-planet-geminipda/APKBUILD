@@ -14,11 +14,11 @@ source="deviceinfo
 	20-fbdev.conf"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/10-geminipda-loopback-device.sh \
 		"$pkgdir"/usr/share/mkinitfs/hooks/10-geminipda-loopback-device.sh

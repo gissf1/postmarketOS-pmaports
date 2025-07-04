@@ -22,23 +22,23 @@ subpackages="
 source="deviceinfo"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_v0() {
 	pkgdesc="Kernel for PineTab 2 Dev Units"
 	depends="linux-pine64-pinetab2"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_v2() {
 	pkgdesc="Kernel for PineTab 2 Early Adopter"
 	depends="linux-pine64-pinetab2"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

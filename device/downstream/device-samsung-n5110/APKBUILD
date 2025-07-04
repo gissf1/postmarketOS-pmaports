@@ -12,7 +12,7 @@ makedepends="devicepkg-dev"
 source="deviceinfo pointercal asound.state Kona_WM1811/hifi.conf Kona_WM1811/Kona_WM1811.conf Kona_WM1811/lp.conf 90-$pkgname.rules"
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/pointercal \
 		"$pkgdir"/etc/pointercal

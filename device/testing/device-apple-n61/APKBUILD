@@ -18,11 +18,11 @@ provides="device-apple-iphone6=$pkgver-r$pkgrel"
 replaces="device-apple-iphone6"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

@@ -4,7 +4,7 @@
 pkgname=device-google-oak
 pkgdesc="Google Oak Chromebooks"
 pkgver=8
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -25,11 +25,11 @@ provides="google-elm=$pkgver-r$pkgrel google-hana=$pkgver-r$pkgrel"
 replaces="google-elm google-hana"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

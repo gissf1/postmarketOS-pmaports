@@ -19,11 +19,11 @@ subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 source="deviceinfo initfs-hook.sh pointercal"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/pointercal \
 		"$pkgdir"/etc/pointercal

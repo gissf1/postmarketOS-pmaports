@@ -50,7 +50,7 @@ do
 			do
 				echo "Found novatek firmware file at $firmware_file"
 
-				cp $firmware_file /lib/firmware/
+				cp "$firmware_file" /lib/firmware/
 			done
 
 			umount /firmware-mnt

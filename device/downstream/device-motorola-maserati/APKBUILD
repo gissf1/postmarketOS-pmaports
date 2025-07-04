@@ -12,11 +12,11 @@ makedepends="devicepkg-dev"
 source="deviceinfo 10-safestrap-maserati.sh"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	mkdir -p "$pkgdir"/usr/share/mkinitfs/hooks/
 	install -Dm644 "$srcdir"/10-safestrap-maserati.sh \

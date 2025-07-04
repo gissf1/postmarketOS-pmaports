@@ -15,11 +15,11 @@ source="deviceinfo
 options="!check !archcheck"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -D -m644 "$srcdir"/90-android.rules \
 		"$pkgdir"/etc/udev/rules.d/90-android.rules
 }

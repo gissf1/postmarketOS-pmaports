@@ -1,6 +1,6 @@
 pkgname=firmware-samsung-pxa1908
 pkgver=2
-pkgrel=5
+pkgrel=6
 pkgdesc="Firmware for Samsung PXA1908 devices"
 url="https://postmarketos.org"
 arch="aarch64"
@@ -21,7 +21,7 @@ subpackages="
 	"
 
 package() {
-	cd proprietary/etc/firmware/mrvl/
+	cd proprietary/etc/firmware/mrvl/ || exit 1
 
 	install -Dm644 "$_fw_file" \
 		-t "$pkgdir/lib/firmware/postmarketos/mrvl"
@@ -33,7 +33,7 @@ downstream() {
 
 	mkdir "$subpkgdir"
 
-	cd "$builddir"/proprietary/etc/firmware/mrvl/
+	cd "$builddir"/proprietary/etc/firmware/mrvl/ || exit 1
 	for _i in $_misc_files; do
 		install -Dm644 "$_i" \
 			-t "$subpkgdir/lib/firmware/postmarketos/mrvl"

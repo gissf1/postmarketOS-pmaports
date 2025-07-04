@@ -28,11 +28,11 @@ source="
 	"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	_tab3_audio_dir="$pkgdir/usr/share/alsa/ucm2/conf.d/TAB3"
 

@@ -24,11 +24,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	mkimage -A arm -O linux -T script -C none -n "uBoot commands" -d "$srcdir"/boot.cmd "$srcdir"/boot.scr
 	install -Dm755 "$srcdir"/boot.cmd "$pkgdir"/boot/boot.cmd
 	install -Dm755 "$srcdir"/boot.scr "$pkgdir"/boot/boot.scr

@@ -4,7 +4,7 @@
 
 pkgname=linux-postmarketos-omap
 pkgver=6.15.0
-pkgrel=1
+pkgrel=2
 pkgdesc="Mainline kernel fork for OMAP devices"
 arch="armv7"
 url="https://kernel.org/"
@@ -22,7 +22,7 @@ case $pkgver in
 	*.*.*) _kernver=$pkgver;;
 esac
 
-if [ $_rc ]
+if [ "$_rc" ]
 then
 	_kernsrc="linux-$pkgver.tar.gz::https://git.kernel.org/torvalds/t/linux-$_kernver.tar.gz"
 else

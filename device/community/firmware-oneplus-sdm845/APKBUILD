@@ -2,7 +2,7 @@
 
 pkgname=firmware-oneplus-sdm845
 pkgver=10
-pkgrel=1
+pkgrel=2
 pkgdesc="Firmware for OnePlus 6 / 6T"
 url="https://gitlab.com/sdm845-mainline/firmware-oneplus-sdm845"
 arch="aarch64"
@@ -41,12 +41,12 @@ firmware_sensors() {
 	install_if="$pkgname-nonfree-firmware"
 	mkdir "$subpkgdir"
 
-	cd "$srcdir/$pkgname-$_version/"
+	cd "${srcdir}/${pkgname}-${_version}/" || exit 1
 	while IFS="" read -r _i || [ -n "$_i" ]; do
-		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
-		echo $_i
-		install -Dm644 $_i "$pkgdir/$_i"
-	done < "$srcdir/sensor.files"
+		[ ! -d "$(dirname "$_i")" ] && mkdir -p "$(dirname "$_i")"
+		echo "$_i"
+		install -Dm644 "$_i" "${pkgdir}/${_i}"
+	done < "${srcdir}/sensor.files"
 }
 
 sha512sums="

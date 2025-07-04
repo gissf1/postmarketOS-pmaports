@@ -27,11 +27,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	mkimage -A arm -O linux -T script -n postmarketOS \
 		-d "$srcdir"/sdboot.cmd "$srcdir/sdboot.scr"
 	install -Dm644 "$srcdir/sdboot.scr" "$pkgdir/boot/sdboot.scr"

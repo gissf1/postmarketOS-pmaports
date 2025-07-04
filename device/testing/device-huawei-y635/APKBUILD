@@ -13,11 +13,11 @@ source="deviceinfo modules-initfs pointercal phoc.ini"
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware $pkgname-phosh"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -D -m644 "$srcdir"/pointercal -t \
 		"$pkgdir"/etc
 }

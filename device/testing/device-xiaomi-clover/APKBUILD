@@ -28,23 +28,23 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_clover() {
 	pkgdesc="For regular Mi Pad 4"
 	depends="linux-postmarketos-qcom-sdm660"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_cloverplus() {
 	pkgdesc="For Mi Pad 4 Plus"
 	depends="linux-postmarketos-qcom-sdm660"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

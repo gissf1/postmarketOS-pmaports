@@ -5,7 +5,7 @@
 pkgname=soc-qcom-msm8953
 pkgdesc="Common package for Qualcomm MSM8953 devices"
 pkgver=14
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="BSD-3-Clause"
 arch="aarch64"
@@ -34,9 +34,9 @@ ucm() {
 	provides="alsa-ucm-conf"
 	provider_priority=1
 
-	cd "$srcdir/alsa-ucm-conf-$_ucm_commit"
-	mkdir -p "$subpkgdir"/usr/share/alsa
-	cp -r ucm2 "$subpkgdir"/usr/share/alsa
+	cd "${srcdir}/alsa-ucm-conf-${_ucm_commit}" || exit 1
+	mkdir -p "${subpkgdir}"/usr/share/alsa
+	cp -r ucm2 "${subpkgdir}"/usr/share/alsa
 }
 
 modem() {
@@ -60,7 +60,7 @@ modem_openrc() {
 		rmtfs-openrc
 		tqftpserv-openrc
 	"
-	install -Dm755 $srcdir/moto-modem-rfs-setup.openrc "$subpkgdir"/etc/init.d/moto-modem-rfs-setup
+	install -Dm755 "$srcdir"/moto-modem-rfs-setup.openrc "$subpkgdir"/etc/init.d/moto-modem-rfs-setup
 }
 
 gpu() {

@@ -12,11 +12,11 @@ makedepends="devicepkg-dev"
 source="deviceinfo initfs-hook.sh"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 sha512sums="
 fbd5b895aada671e8c83a2578e16523e60f8697bfd82411b86886035f53d077ba73bc516503e56a3a2f529462f36e40f4d8355a711d8f311e11d1ba4781fa1e3  deviceinfo

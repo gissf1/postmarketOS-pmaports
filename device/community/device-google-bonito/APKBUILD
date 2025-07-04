@@ -3,7 +3,7 @@
 pkgname=device-google-bonito
 pkgdesc="Google Pixel 3a XL"
 pkgver=5
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -30,25 +30,25 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_sdc() {
 	pkgdesc="Kernel for devices with the Samsung panel"
 	depends="linux-postmarketos-qcom-sdm670"
 
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_tianma() {
 	pkgdesc="Kernel for devices with the Tianma panel"
 	depends="linux-postmarketos-qcom-sdm670"
 
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 nonfree_firmware() {

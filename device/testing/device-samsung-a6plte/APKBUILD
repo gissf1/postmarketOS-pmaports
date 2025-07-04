@@ -25,11 +25,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/gpu-nobin.sh \
 		"$pkgdir"/etc/profile.d/gpu-nobin.sh

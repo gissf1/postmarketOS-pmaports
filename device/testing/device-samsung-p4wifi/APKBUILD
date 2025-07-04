@@ -24,11 +24,11 @@ source="
 	wm8994aif1.conf"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/HiFi \
 		"$pkgdir"/usr/share/alsa/ucm/wm8994aif1/HiFi

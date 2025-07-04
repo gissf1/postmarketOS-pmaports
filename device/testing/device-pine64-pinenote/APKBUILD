@@ -42,11 +42,11 @@ subpackages="
 builddir="$srcdir"/pinenote-dist-$_commit
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir"/local-overrides.quirks \
 		-t "$pkgdir"/etc/libinput/

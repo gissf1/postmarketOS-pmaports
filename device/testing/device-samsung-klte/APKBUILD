@@ -27,23 +27,23 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_klte() {
 	pkgdesc="For G900F"
 	depends="linux-postmarketos-qcom-msm8974"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_kltechn() {
 	pkgdesc="For Chinese variants G9006/G9008/G9009W (kltechn)"
 	depends="linux-postmarketos-qcom-msm8974"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 nonfree_firmware() {

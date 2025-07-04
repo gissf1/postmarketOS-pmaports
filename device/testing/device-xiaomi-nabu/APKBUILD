@@ -44,7 +44,7 @@ build() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install	-Dm644 "$srcdir/XiaomiPad5.conf" -c \
 		"$pkgdir/usr/share/alsa/ucm2/conf.d/sm8150/Xiaomi Pad 5.conf"

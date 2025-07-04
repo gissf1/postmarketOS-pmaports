@@ -22,11 +22,11 @@ source="deviceinfo
 	fb.modes"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/90-touchscreen.rules "$pkgdir"/etc/udev/rules.d/90-touchscreen.rules
 	install -Dm644 "$srcdir"/100-charging.rules "$pkgdir"/etc/udev/rules.d/100-charging.rules
 	install -Dm744 "$srcdir"/armani_battery_charging.sh "$pkgdir"/usr/bin/armani_battery_charging.sh

@@ -35,11 +35,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Block nouveau as it is in very bad condition
 	install -Dm644 "$srcdir"/gpu.conf \
@@ -57,7 +57,7 @@ kernel_nyan_big() {
 		device-google-nyan-big-kernel-nyan-big-2gb
 		device-google-nyan-big-kernel-nyan-big-4gb
 		"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_nyan_big_fhd() {
@@ -71,7 +71,7 @@ kernel_nyan_big_fhd() {
 		device-google-nyan-big-kernel-nyan-big-2gb-fhd
 		device-google-nyan-big-kernel-nyan-big-4gb-fhd
 		"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 mpv_wayland() {

@@ -54,13 +54,13 @@ prepare() {
 }
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 kernel_allwinner() {
 	pkgdesc="Allwinner kernel with support for Pinetab LCD panel (from Early Adopter)"
 	depends="linux-postmarketos-allwinner>=5.14"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 
 	mkimage \
 		-A arm \
@@ -81,7 +81,7 @@ kernel_allwinner() {
 kernel_allwinner_dev() {
 	pkgdesc="Allwinner kernel with support for old Pinetab LCD panel (pre Early Adopter)"
 	depends="linux-postmarketos-allwinner"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 
 	mkimage \
 		-A arm \
@@ -118,7 +118,7 @@ phosh() {
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	# Alsa usecase manager config
 	install -Dm644 -t "$pkgdir"/usr/share/alsa/ucm2/PineTab \

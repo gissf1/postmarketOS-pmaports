@@ -27,11 +27,11 @@ source="
 replaces="openrc" # for hwclock configuration
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -D -m644 "$srcdir"/networkmanager.conf \
 		"$pkgdir"/etc/NetworkManager/conf.d/10-manta.conf

@@ -20,11 +20,11 @@ $pkgname-kernel-a:kernel_a
 $pkgname-kernel-b:kernel_b"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {
@@ -36,13 +36,13 @@ nonfree_firmware() {
 kernel_a() {
 	pkgdesc="Quartz64 Model A"
 	depends="u-boot-pine64-quartz64-a linux-postmarketos-rockchip"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_b() {
 	pkgdesc="Quartz64 Model B"
 	depends="u-boot-pine64-quartz64-b linux-postmarketos-rockchip"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 sha512sums="

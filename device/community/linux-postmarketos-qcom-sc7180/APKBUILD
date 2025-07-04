@@ -1,7 +1,7 @@
 # Maintainer: Jenneron <jenneron@protonmail.com>
 pkgname=linux-postmarketos-qcom-sc7180
 pkgver=6.6.28
-pkgrel=8
+pkgrel=9
 pkgdesc="Mainline kernel fork for Qualcomm Snapdragon 7c devices"
 arch="aarch64"
 _carch="arm64"
@@ -85,7 +85,7 @@ package() {
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+		"$pkgdir"/usr/share/kernel/"$_flavor"/kernel.release
 }
 
 sha512sums="

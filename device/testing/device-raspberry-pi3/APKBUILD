@@ -14,11 +14,11 @@ subpackages="$pkgname-openrc"
 source="deviceinfo modules-initfs usercfg.txt 95-vchiq-permissions.rules networkmanager.conf"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm644 "$srcdir"/usercfg.txt "$pkgdir"/boot/usercfg.txt
 	install -Dm644 "$srcdir"/95-vchiq-permissions.rules \
 		"$pkgdir"/etc/udev/rules.d/95-vchiq-permissions.rules

@@ -14,11 +14,11 @@ source="deviceinfo"
 subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

@@ -36,11 +36,11 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 
 	install -Dm644 "$srcdir/"/firmware.files \
 		-t "$pkgdir"/usr/share/mkinitfs/files/
@@ -58,7 +58,7 @@ usbguard() {
 	install_if="$pkgname=$pkgver-r$pkgrel usbguard"
 	install -Dm600 "$srcdir"/usbguard.conf \
 		"$subpkgdir"/etc/usbguard/rules.d/"$pkgname".conf
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 sha512sums="

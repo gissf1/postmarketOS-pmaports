@@ -2,7 +2,7 @@
 # Co-Maintainer: Jenneron <jenneron@protonmail.com>
 pkgname=linux-postmarketos-mediatek-mt8183
 pkgver=6.12.21
-pkgrel=1
+pkgrel=2
 pkgdesc="Mainline kernel for mediatek mt8183"
 arch="aarch64"
 _flavor="${pkgname#linux-}"
@@ -76,7 +76,7 @@ package() {
 	rm -f "$pkgdir"/lib/modules/*/build "$pkgdir"/lib/modules/*/source
 
 	install -D "$builddir"/include/config/kernel.release \
-		"$pkgdir"/usr/share/kernel/$_flavor/kernel.release
+		"$pkgdir"/usr/share/kernel/"$_flavor"/kernel.release
 }
 
 

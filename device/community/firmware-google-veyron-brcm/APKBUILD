@@ -1,7 +1,7 @@
 # Maintainer: Jenneron <jenneron@protonmail.com>
 pkgname=firmware-google-veyron-brcm
 pkgver=2
-pkgrel=0
+pkgrel=1
 pkgdesc="Broadcom firmware for Google Veyron Chromebooks"
 url="https://github.com/jenneron/firmware-google-veyron-brcm"
 arch="armv7"
@@ -15,7 +15,7 @@ _fwdir="/lib/firmware/postmarketos"
 
 package() {
 	mkdir -p "$pkgdir"
-	cd "$srcdir/firmware-google-veyron-brcm-$_commit"
+	cd "$srcdir/firmware-google-veyron-brcm-$_commit" || exit 1
 	install -Dm644 brcmfmac4354-sdio.bin -t "$pkgdir/$_fwdir"/brcm
 	install -Dm644 brcmfmac4354-sdio.txt -t "$pkgdir/$_fwdir"/brcm
 	install -Dm644 BCM4354.hcd -t "$pkgdir/$_fwdir"/brcm

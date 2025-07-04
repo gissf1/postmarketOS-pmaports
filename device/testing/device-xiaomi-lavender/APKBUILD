@@ -29,23 +29,23 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_boe() {
 	pkgdesc="For Redmi Note 7 with BOE panel"
 	depends="linux-postmarketos-qcom-sdm660"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_tianma() {
 	pkgdesc="For Redmi Note 7 with Tianma panel"
 	depends="linux-postmarketos-qcom-sdm660"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 sha512sums="
 b65e5548b4dd48246d3367c0e60029e5f17d6c4295156b1eff308c1e44793f864f2bcf45ebc52d9679e2b7d667d2eb4d58049c6897a5a6ffebf348672ec6e7fd  deviceinfo

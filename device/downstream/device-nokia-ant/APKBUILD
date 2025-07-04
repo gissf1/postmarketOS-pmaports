@@ -21,11 +21,11 @@ source="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 	install -Dm755 "$srcdir/generate_signed_boot.sh" "$pkgdir/usr/share/mkinitfs/generate_signed_boot.sh"
 }
 

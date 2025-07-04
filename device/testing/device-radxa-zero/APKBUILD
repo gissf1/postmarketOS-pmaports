@@ -14,11 +14,11 @@ subpackages="$pkgname-nonfree-firmware:nonfree_firmware"
 source="deviceinfo modules-initfs"
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

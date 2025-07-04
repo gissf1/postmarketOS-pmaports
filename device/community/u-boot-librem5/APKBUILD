@@ -4,7 +4,7 @@
 # Contributor: Clayton Craft <clayton@craftyguy.net>
 pkgname=u-boot-librem5
 pkgver=2022.10
-pkgrel=3
+pkgrel=4
 # 'upstream/librem5' branch in uboot repo
 _commit="c4960dade272da9d6a7f53f6956d4d6747d573e9"
 # 'librem5' branch in atf repo
@@ -49,11 +49,11 @@ prepare() {
 	default_prepare
 
 	msg "Extracting DDR & HDMI firmware"
-	cd "$srcdir"
+	cd "$srcdir" || exit 1
 	chmod +x firmware-imx-$_firmwareversion.bin
 	./firmware-imx-$_firmwareversion.bin --auto-accept
-	cp -v "$_firmware_builddir"/firmware/ddr/synopsys/lpddr4*.bin $builddir/
-	cp -v "$_firmware_builddir"/firmware/hdmi/cadence/signed_*imx8m.bin $builddir/
+	cp -v "$_firmware_builddir"/firmware/ddr/synopsys/lpddr4*.bin "$builddir"/
+	cp -v "$_firmware_builddir"/firmware/hdmi/cadence/signed_*imx8m.bin "$builddir"/
 
 	# Disable -Werror in arm-trusted-firmware so it builds with GCC 12. The
 	# version we use here is missing E=0 introduced here:
@@ -63,14 +63,14 @@ prepare() {
 
 build() {
 	msg "Building ARM trusted firmware"
-	cd "$_atf_builddir"
+	cd "$_atf_builddir" || exit 1
 	LDFLAGS="-no-warn-rwx-segment" make PLAT=imx8mq bl31
 	# Overwrite default bl31 binary with one made here
 	export BL31="$_atf_builddir/build/imx8mq/release/bl31.bin"
 	cp -v "$_atf_builddir"/build/imx8mq/release/bl31.bin "$builddir"/
 
 	msg "Building u-boot"
-	cd $builddir
+	cd "$builddir" || exit 1
 
 	# Devkit uboot firmware
 	# NOTE: disabled, not supported yet in the new mainline branch

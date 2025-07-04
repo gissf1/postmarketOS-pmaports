@@ -4,7 +4,7 @@
 # Contributor: Clayton Craft <clayton@craftyguy.net>
 pkgname=device-purism-librem5
 pkgver=9
-pkgrel=0
+pkgrel=1
 _confver=69
 _purismrel=2
 # <librem5-base ver>.<purism release>
@@ -74,7 +74,7 @@ builddir="$srcdir/librem5-base-pureos-$_purismver"
 
 build() {
 	mkimage -A arm64 -C none -O linux -T script -d "$srcdir/uboot-script.cmd" "$srcdir/boot.scr"
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 gnome() {
@@ -157,12 +157,12 @@ package() {
 	for f in "$builddir"/debian/*.udev; do
 		# rename the udev rules, dropping the default prefix and (arbitrarily...) using "85-"
 		install -Dm644 "$f" \
-			"$pkgdir"/usr/lib/udev/rules.d/85-"$(basename ${f//librem5-base-defaults./}).rules"
+			"${pkgdir}/usr/lib/udev/rules.d/85-$(basename "${f//librem5-base-defaults./}").rules"
 	done
 	for f in "$srcdir"/*.rules; do
 		# rename the udev rules, dropping the default prefix and (arbitrarily...) using "85-"
 		install -Dm644 "$f" \
-			"$pkgdir"/usr/lib/udev/rules.d/"$(basename $f)"
+			"$pkgdir"/usr/lib/udev/rules.d/"$(basename "$f")"
 	done
 
 	# Bluetooth (Sparklan)
@@ -205,7 +205,7 @@ package() {
 	install -Dm644 "$srcdir"/modemmanager.conf \
 		"$pkgdir"/etc/conf.d/modemmanager
 
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {

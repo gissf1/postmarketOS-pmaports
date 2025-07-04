@@ -29,24 +29,24 @@ subpackages="
 "
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 kernel_alpine() {
 	# FIXME: msm-modem-uim-selection hangs boot for some 20 seconds when installed with non-free FW
 	pkgdesc="Upstream stable kernel, unpatched Alpine linux-stable"
 	depends="linux-stable linux-firmware-none"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 kernel_mainline() {
 	pkgdesc="Close to mainline kernel, plenty of working features and fixes"
 	depends="linux-postmarketos-qcom-msm8998 soc-qcom-msm8998"
-	devicepkg_subpackage_kernel $startdir $pkgname $subpkgname
+	devicepkg_subpackage_kernel "$startdir" $pkgname "$subpkgname"
 }
 
 nonfree_firmware() {

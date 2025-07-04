@@ -3,7 +3,7 @@
 pkgname=device-bq-paella
 pkgdesc="BQ Aquaris X5"
 pkgver=9
-pkgrel=0
+pkgrel=1
 url="https://postmarketos.org"
 license="MIT"
 arch="aarch64"
@@ -22,11 +22,11 @@ replaces="$pkgname-kernel-mainline $pkgname-kernel-mainline-modem"
 for pkg in $replaces; do provides="$provides $pkg=$pkgver-r$pkgrel"; done
 
 build() {
-	devicepkg_build $startdir $pkgname
+	devicepkg_build "$startdir" $pkgname
 }
 
 package() {
-	devicepkg_package $startdir $pkgname
+	devicepkg_package "$startdir" $pkgname
 }
 
 nonfree_firmware() {
