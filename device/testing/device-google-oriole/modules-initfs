@@ -1,4 +1,3 @@
-# Remove this file if unnecessary (CHANGEME!)
 # This file shall contain a list of modules to be included in the initramfs,
 # so that they are available in early boot stages. In general, it should
 # include modules to support unlocking FDE (touchscreen, panel, etc),

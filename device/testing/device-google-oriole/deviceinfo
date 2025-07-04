@@ -21,3 +21,5 @@ deviceinfo_kernel_cmdline="ignore_loglevel earlycon console=ttySAC0,3000000n8 cl
 deviceinfo_generate_bootimg="true"
 deviceinfo_flash_pagesize="4096"
 deviceinfo_header_version="4"
+
+deviceinfo_rootfs_image_sector_size="4096"

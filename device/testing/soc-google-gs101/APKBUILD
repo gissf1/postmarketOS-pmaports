@@ -13,7 +13,7 @@ package() {
 	install -Dm644 "$srcdir"/20-devmem.files \
 		"$pkgdir"/usr/share/mkinitfs/files/20-devmem.files
 	install -Dm644 "$srcdir"/00-enable-fb.sh \
-        -t "$pkgdir"/usr/share/mkinitfs/hooks/
+	-t "$pkgdir"/usr/share/mkinitfs/hooks/
 }
 
 sha512sums="
