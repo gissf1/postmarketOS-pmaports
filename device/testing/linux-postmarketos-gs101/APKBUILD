@@ -1,6 +1,6 @@
 
 pkgname=linux-postmarketos-gs101
-pkgver=6.16_rc3
+pkgver=6.16_rc4
 pkgrel=0
 pkgdesc="Google gs101 mainline kernel"
 arch="aarch64"
@@ -21,7 +21,7 @@ makedepends="
 "
 
 # Source
-_commit="86731a2a651e58953fc949573895f2fa6d456841"
+_commit="d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af"
 _config="config-$_flavor.$arch"
 source="
 	$pkgname-$_commit.tar.gz::https://github.com/torvalds/linux/archive/$_commit.tar.gz
@@ -58,7 +58,7 @@ package() {
 }
 
 sha512sums="
-52ac54b3611d15c44e2adf55ced39472aa27117fd194a42cf818c05e63f039f041f9c29895d360248c29b9c5f84afa443189dc04a0bfc3a7d6971ec453b44974  linux-postmarketos-gs101-86731a2a651e58953fc949573895f2fa6d456841.tar.gz
+5a740f7968e17c7c0ea11f4cbf216ff353dee9dbdddbdf6ca24966a393cbb93d094a3baa764baad2fc6330bf91325b43de12afdd6f154414139db6030fcd4b11  linux-postmarketos-gs101-d0b3b7b22dfa1f4b515fd3a295b3fd958f9e81af.tar.gz
 c6a4c37d094836337e71702c0aa9fed6dd590dd82140cf4ef6cf3e0841d0c5ab2cbd12a6fd0b6cdad3f521c034c19d8473f365713149ddfb8a34e9a24cc76110  arm64-dts-exynos-gs101-bluejay-add-new-board-file.patch
-f254ca36cbed4f2870521efdb07075632eabc01231e820224471879393d6b2478e6443c20221aabe2902eda6304d1a74d7684d828515be6ba554ab4f93e593c2  config-postmarketos-gs101.aarch64
+d8a2d5edb71ff4a4a8f4b768712e8bbd3068fe1cbcdf14bea4f25b31773be11fddd2f81b90a8b60539b385831916175e3edd7feddb3ea6bc553d2449a06b6c4d  config-postmarketos-gs101.aarch64
 "
