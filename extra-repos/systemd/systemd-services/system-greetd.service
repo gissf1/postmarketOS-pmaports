@@ -1,0 +1,26 @@
+[Unit]
+Description=Greeter daemon
+After=rc-local.service systemd-user-sessions.service plymouth-quit-wait.service
+After=getty@tty1.service
+After=session-c1.scope dbus.socket
+
+Conflicts=getty@tty1.service
+OnFailure=getty@tty1.service
+
+# Prevent starting on systems without virtual consoles
+ConditionPathExists=/dev/tty0
+
+[Service]
+Type=simple
+ExecStart=greetd
+IgnoreSIGPIPE=no
+SendSIGHUP=yes
+TimeoutStopSec=30s
+KeyringMode=shared
+Restart=always
+RestartSec=1
+StartLimitBurst=5
+StartLimitInterval=30
+
+[Install]
+Alias=display-manager.service
