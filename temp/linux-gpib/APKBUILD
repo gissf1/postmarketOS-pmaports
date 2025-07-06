@@ -1,0 +1,72 @@
+# Contributor: 
+# Maintainer:
+pkgname=linux-gpib
+pkgver=4.3.6
+pkgrel=0
+pkgdesc="Linux GPIB userland applications"
+url="https://sourceforge.net/projects/linux-gpib"
+arch="all"
+license="GPL-2.0-only"
+depends="fxload
+	linux-gpib-firmware
+	python3
+	py3-setuptools"
+options="pmb:cross-native"
+makedepends="docbook-xml linux-headers pkgconf python3-dev py3-setuptools"
+checkdepends=""
+install=""
+subpackages="$pkgname-dev $pkgname-doc"
+source="https://downloads.sourceforge.net/linux-gpib/linux-gpib-$pkgver.tar.gz
+	0000-ptread.patch
+	0001-libgpib-pc.patch
+	0002-usb-fxloader.patch"
+#
+# We are only-interested in the user part, as kernels >6.13 have the GPIB drivers included (still need configuring)
+builddir="$srcdir/$pkgname-user-$pkgver"
+
+unpack() {
+        default_unpack
+        tar -xzf "$srcdir/$pkgname-$pkgver/$pkgname-user-$pkgver".tar.gz -C "$srcdir"
+}
+
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--datadir=/lib/firmware \
+		--localstatedir=/var \
+		--disable-guile-binding \
+		--disable-perl-binding \
+		--disable-php-binding \
+		--disable-tcl-binding \
+		--enable-documentation
+
+	make
+}
+
+check() {
+	make check
+}
+
+doc() {
+	_docs="gpib_version.txt  linux-gpib.pdf  linux-gpib.sgml"
+	for _doc in $_docs; do
+		install -Dm644 "$srcdir"/$pkgname-user-$pkgver/doc/$_doc \
+			"$subpkgdir"/usr/share/doc/$pkgname/$_doc || return 1
+	done
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="
+a8005c71bfddb854ecbe4df0a81530e44378150242508b10df58c61d039c6d329020407608e31f1ef360de0c83169e76b793c032256e732d229bfd2da4cbaa35  linux-gpib-4.3.6.tar.gz
+cf5425194921ecd12c19d8774a2d5b058e4e467dea77f569fcec3b655be27efeb4dad776926e56c6caefca24b245224d2567e9b0c89a618ffd312b7779da0f26  0000-ptread.patch
+de365fa798f3d4661297ebec66a0a89b402031430fc32992a5d5f5d583096e724d7d9a250d1c2877d188220515afa35bb1b2f55051c1c07426027f00e65ea17f  0001-libgpib-pc.patch
+12413895ba25b222cbaa3ea44c28be9830c3b6961754df00b303d5b691b826c4ad78c2cabcf89f31fc3e795f5748b8e679dcc1cb88e924d914483a6aad80611a  0002-usb-fxloader.patch
+"
