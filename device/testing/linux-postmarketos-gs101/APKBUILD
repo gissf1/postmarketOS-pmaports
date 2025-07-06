@@ -18,6 +18,9 @@ makedepends="
 	lz4
 	openssl-dev
 	perl
+	gmp-dev
+	mpc1-dev
+	mpfr-dev
 "
 
 # Source
