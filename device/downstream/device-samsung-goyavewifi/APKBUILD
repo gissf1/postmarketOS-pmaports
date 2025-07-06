@@ -1,20 +1,33 @@
 # Reference: <https://postmarketos.org/devicepkg>
 pkgname=device-samsung-goyavewifi
 pkgdesc="Samsung Galaxy Tab 3 Lite"
-pkgver=2
+pkgver=3
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
 options="!check !archcheck"
+
+replaces="
+	soc-sprd-audio
+	pulseaudio
+"
+
 depends="
 	linux-samsung-goyavewifi
 	mkbootimg
 	msm-fb-refresher
 	postmarketos-base
+	postmarketos-base-downstream
+	soc-sprd-audio-sc8830
 "
 makedepends="devicepkg-dev"
-source="deviceinfo"
+source="
+	audio/asound.conf
+	audio/default.pa
+	deviceinfo
+	udev/00-touchscreen-dev.rules
+"
 
 build() {
 	devicepkg_build $startdir $pkgname
@@ -22,8 +35,18 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	# Audio fix
+	install -Dm644 "$srcdir"/asound.conf "$pkgdir"/etc/asound.conf
+	install -Dm644 "$srcdir"/default.pa "$pkgdir"/etc/pulse/default.pa
+
+	# Udev rules
+	install -D -m644 "$srcdir"/00-touchscreen-dev.rules "$pkgdir"/etc/udev/rules.d/00-touchscreen-dev.rules
 }
 
 sha512sums="
+be3dac5bdb6df11bcbed2b43e0d505a4c4a0a17995ced7fde376e1a8ec85d1a24549b392b5756844bea663522c5bdcf021752094c7ad6b57f62fb410beff017f  asound.conf
+eb6a5a2fc8d073d8a0f91bac92030fd14d2548dbd0fc2a7791c90e31fc09ef12807c77b39199b115d91b99bdb7a378168d2ff036344959b0d54c78cb8b0a958b  default.pa
 11380f9ff5382e5e0ccc6dff62048ef6e1d2ea3626311217a6f41b3c2c502cd5a380bbe2fd8f9a064bc381b6c2e3fb74501dfc95f3e415ece2073ad0883d4e17  deviceinfo
+e4803d45edcb6ff42a6673acc33121c48e93c61437e4674712d2f893d2a9eb8df90bac939522d428da4e9f7ddbc7b150d5700652fefa1d0c6025639661a68c42  00-touchscreen-dev.rules
 "
