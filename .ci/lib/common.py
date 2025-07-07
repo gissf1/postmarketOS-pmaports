@@ -35,9 +35,14 @@ def run_git(parameters, check=True, stderr=None):
 
 def add_upstream_git_remote():
     """ Add a remote pointing to postmarketOS/pmaports. """
+    # Don't assume the upstream remote points to the right repo.
+    # Remove it if it exists.
+    run_git(["remote", "remove", "upstream"], False)
+    # Add the upstream remote
     run_git(["remote", "add", "upstream",
-             "https://gitlab.postmarketos.org/postmarketOS/pmaports.git"], False)
-    run_git(["fetch", "-q", "upstream"])
+             "https://gitlab.postmarketos.org/postmarketOS/pmaports.git"])
+    # And fetch
+    run_git(["fetch", "-q", "--unshallow", "upstream"])
 
 
 def commit_message_has_string(needle):
