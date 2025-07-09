@@ -147,3 +147,97 @@ resize_filesystem_after_mount() {
 			;;
 	esac
 }
+
+get_boot_device() {
+	modprobe efivarfs
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars || true
+	
+	local efi_var="$(ls /sys/firmware/efi/efivars/LoaderDevicePartUUID-*)"
+	local part_uuid
+	local device
+	
+	# FIXME: this isn't a file?! -e (and -f, and so on) always fail on this path
+	# if [ ! -e "$efi_var" ]; then
+	# 	echo "ERROR: LoaderDevicePartUUID not found - not booted via EFI or efivarfs failed?"
+	# 	return 1
+	# fi
+	
+	# Read UUID, skip first 4 bytes (EFI attributes), convert to lowercase
+	# https://docs.kernel.org/filesystems/efivarfs.html
+	part_uuid=$(dd if="$efi_var" bs=1 skip=4 2>/dev/null | tr -d '\0' | tr '[:upper:]' '[:lower:]')
+	
+	# Find device with matching PARTUUID
+	device=$(blkid -t "PARTUUID=$part_uuid" -o device)
+	if [ -z "$device" ]; then
+		echo "ERROR: Could not find device with PARTUUID=$part_uuid"
+		return 1
+	fi
+	
+	# Get parent device by following symlinks in sysfs
+	echo /dev/$(basename $(dirname $(readlink /sys/class/block/$(basename $device))))
+}
+
+# Get first boot configuration values
+get_firstboot_config() {
+	# FIXME: these should be read from some UI tool
+	firstboot_hostname="foo"
+	firstboot_username="user"
+	firstboot_password="147147"
+}
+
+# Handle first boot scenario
+handle_first_boot() {
+	local boot_device
+	local temp_creds
+	
+	echo "No root partition found - performing first boot setup"
+	show_splash "Creating root partition..."
+	
+	# Get boot device
+	boot_device=$(get_boot_device)
+	if [ -z "$boot_device" ]; then
+		echo "ERROR: Could not determine boot device"
+		fail_halt_boot
+	fi
+	
+	echo "Using device: $boot_device"
+	
+	# Run systemd-repart to create partitions
+	if ! systemd-repart --dry-run=no "$boot_device"; then
+		echo "ERROR: systemd-repart failed"
+		fail_halt_boot
+	fi
+	
+	# Find the newly created root partition
+	find_root_partition
+	if [ -z "$PMOS_ROOT" ]; then
+		echo "ERROR: Root partition not found after repart"
+		fail_halt_boot
+	fi
+	
+	# Mount root partition
+	mount_root_partition
+	
+	# Get configuration values
+	get_firstboot_config
+	
+	# Run systemd-firstboot
+	echo "Setting up system configuration..."
+	systemd-firstboot --root=/sysroot \
+		--locale=en_US.UTF-8 \
+		--hostname="$firstboot_hostname"
+	
+	# Create user with systemd-sysusers
+	echo "Creating user account..."
+	temp_creds=$(mktemp -d)
+	echo "$firstboot_password" > "$temp_creds/passwd.plaintext-password.$firstboot_username"
+	
+	echo "u $firstboot_username - \"Default User\" /home/$firstboot_username" | \
+		SYSTEMD_CREDENTIAL_PATH="$temp_creds" \
+		systemd-sysusers --root=/sysroot --inline -
+	
+	# Clean up
+	rm -rf "$temp_creds"
+	
+	echo "First boot setup complete"
+}

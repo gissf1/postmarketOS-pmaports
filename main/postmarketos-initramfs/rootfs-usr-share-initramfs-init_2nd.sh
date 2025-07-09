@@ -45,12 +45,16 @@ mount_subpartitions
 run_hooks /hooks-extra
 
 wait_root_partition
-delete_old_install_partition
-resize_root_partition
-unlock_root_partition
-resize_root_filesystem
-mount_root_partition
-resize_filesystem_after_mount /sysroot
+if [ -z "$PMOS_ROOT" ]; then
+	handle_first_boot
+else
+	delete_old_install_partition
+	resize_root_partition
+	unlock_root_partition
+	resize_root_filesystem
+	mount_root_partition
+	resize_filesystem_after_mount /sysroot
+fi
 
 # Mount boot partition into sysroot if needed since some
 # old installations don't have a proper /etc/fstab file. See #2800

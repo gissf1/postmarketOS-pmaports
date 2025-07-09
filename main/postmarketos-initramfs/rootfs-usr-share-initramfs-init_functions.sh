@@ -356,6 +356,7 @@ mount_subpartitions() {
 	wait_seconds=10
 	echo "Trying to mount subpartitions for $wait_seconds seconds..."
 	find_root_partition
+	subpartitions_found=0
 	while [ -z "$PMOS_ROOT" ]; do
 		partitions="$android_parts $(grep -v "loop\|ram" < /proc/diskstats |\
 			sed 's/\(\s\+[0-9]\+\)\+\s\+//;s/ .*//;s/^/\/dev\//')"
@@ -365,6 +366,7 @@ mount_subpartitions() {
 					echo "Mount subpartitions of $partition"
 					SUBPARTITION_DEV="$partition"
 					kpartx -afs "$partition"
+					subpartitions_found=1
 					# Ensure that this was the *correct* subpartition
 					# Some devices have mmc partitions that appear to have
 					# subpartitions, but aren't our subpartition.
@@ -382,7 +384,9 @@ mount_subpartitions() {
 			esac
 		done
 		if [ "$(get_uptime_seconds)" -ge $(( attempt_start + wait_seconds )) ]; then
-			echo "ERROR: failed to mount subpartitions!"
+			if [ "$subpartitions_found" = "1" ]; then
+				echo "ERROR: failed to mount subpartitions!"
+			fi
 			return;
 		fi
 		sleep 0.1;
@@ -625,7 +629,8 @@ wait_partition() {
 	done
 
 	show_splash "ERROR: $description partition not found!\\nhttps://postmarketos.org/troubleshooting"
-	fail_halt_boot
+	return 1
+	# fail_halt_boot
 }
 
 wait_boot_partition() {
