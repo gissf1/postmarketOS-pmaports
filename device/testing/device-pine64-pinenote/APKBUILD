@@ -146,6 +146,8 @@ sway() {
 gnome() {
 	install_if="$pkgname=$pkgver-r$pkgrel gnome"
 	depends="postmarketos-theme pneink-theme"
+
+	mkdir -p "$subpkgdir"
 }
 
 xournalapp() {
