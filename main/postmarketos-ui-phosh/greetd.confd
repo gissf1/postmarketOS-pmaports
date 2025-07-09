@@ -1,0 +1,8 @@
+# Configuration for greetd
+
+# Path to config file to use.
+cfgfile="/etc/phrog/greetd-config.toml"
+
+# Note: Not valid for systemd.
+# Uncomment to use process supervisor when using openrc.
+# supervisor=supervise-daemon

@@ -41,6 +41,10 @@ enable iwd.service
 enable wpa_supplicant.service
 
 # UIs:
+
+## phosh
+enable phrog.service
+
 ## plasma
 enable hfd-service.service
 enable urfkill.service
