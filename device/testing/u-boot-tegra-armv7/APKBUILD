@@ -1,0 +1,127 @@
+# Contributor: Robert Eckelmann <longnoserob@postmarketos.org>
+# Maintainer: Robert Eckelmann <longnoserob@postmarketos.org>
+# Co-Maintainer: Svyatoslav Ryhel <clamor95@gmail.com>
+pkgname=u-boot-tegra-armv7
+pkgver=2025.07
+pkgrel=0
+pkgdesc="u-boot for nvidia tegra"
+url="www.u-boot.org"
+arch="armv7"
+license="GPL-2.0+"
+depends=""
+makedepends="
+	bc
+	bison
+	dtc
+	flex
+	gnutls-dev
+	openssl-dev
+	py3-setuptools
+	python3-dev
+	swig
+	"
+checkdepends=""
+install=""
+optiond="!check !strip pmb:cross-native"
+subpackages="$pkgname-grouper $pkgname-t30 $pkgname-SL101 $pkgname-TF101 $pkgname-TF101g $pkgname-TF701t"
+
+commit="fd98452486e37d34c5480f1d162d91bbb30d0b44"
+source="$pkgname-${pkgver/_/-}.tar.bz2::https://gitlab.com/clamor-s/u-boot/-/archive/$commit/u-boot-$commit.tar.bz2"
+#builddir="$srcdir/"
+builddir="$srcdir/u-boot-$commit/"
+
+
+build() {
+	cd "$builddir"
+	#t20 tf101, tf101g,sl101
+	make transformer_t20_defconfig tf101.config
+	make
+	mkdir "$builddir"/tf101
+	cp u-boot-dtb-tegra.bin "$builddir"/tf101
+	make clean
+	make transformer_t20_defconfig tf101g.config
+	make
+	mkdir "$builddir"/tf101g
+	cp u-boot-dtb-tegra.bin "$builddir"/tf101g
+	make clean
+	make transformer_t20_defconfig sl101.config
+	make
+	mkdir "$builddir"/sl101
+	cp u-boot-dtb-tegra.bin "$builddir"/sl101
+	make clean
+	#t30 (TF201,300,600)
+	make transformer_t30_defconfig tf101
+	make
+	mkdir "$builddir"/t30
+	cp u-boot-dtb-tegra.bin "$builddir"/t30
+	make clean
+	#t114 (TF701t)
+	make tf701t_defconfig
+	make
+	mkdir "$builddir"/tf701t
+	cp u-boot-dtb-tegra.bin "$builddir"/tf701t
+	make clean
+	#grouper
+	make grouper_defconfig
+	make
+	mkdir "$builddir"/grouper
+	cp u-boot-dtb-tegra.bin "$builddir"/grouper
+
+}
+
+
+package() {
+	mkdir -p "$pkgdir"
+}
+
+grouper()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/grouper/
+	install -Dm644 "$builddir/grouper/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/grouper/"
+
+}
+
+t30()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/t30/
+	install -Dm644 "$builddir/t30/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/"
+
+}
+
+SL101()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/SL101/
+	install -Dm644 "$builddir/sl101/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/SL101/"
+
+}
+
+TF101()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/TF101/
+	install -Dm644 "$builddir/tf101/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/TF101"
+
+}
+
+TF101g()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/TF101g/
+	install -Dm644 "$builddir/tf101g/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/TF101g/"
+
+}
+
+TF701t()
+	{
+	mkdir -p "$subpkgdir"/usr/share/u-boot/TF701t/
+	install -Dm644 "$builddir/tf701t/u-boot-dtb-tegra.bin" \
+		-t "$pkgdir/usr/share/u-boot/TF701t/"
+
+}
+
+sha512sums="
+50ec70a04e9a36056a73ea9947938eff71cd230a6121165a8f38a18c040569a09c1d895f273a39245535d2d61204bd71becd4de04af09d833944a9f3fd78f352  u-boot-tegra-armv7-2025.07.tar.bz2
+"
