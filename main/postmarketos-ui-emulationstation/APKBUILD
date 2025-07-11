@@ -1,0 +1,23 @@
+# Maintainer: WeirdTreeThing <bradyn127@protonmail.com>
+pkgname=postmarketos-ui-emulationstation
+pkgver=1
+pkgrel=0
+pkgdesc="(Wayland) UI for selecting and playing games with a controller."
+arch="all"
+url="https://postmarketos.org/"
+license="GPL-3.0-or-later"
+options="!check"
+depends="postmarketos-base-ui-cage emulationstation retroarch foot libretro-fceumm libretro-snes9x"
+source="10-emulationstation.sh es_systems.cfg"
+_pmb_groups="seat"
+
+package() {
+	install -Dm755 "$srcdir"/10-emulationstation.sh \
+		-t "$pkgdir"/etc/tinydm.d/env-wayland.d
+	install -Dm644 "$srcdir"/es_systems.cfg \
+		-t "$pkgdir"/etc/emulationstation
+}
+sha512sums="
+a4569c3f51b823d32c7c39e28d9719c927f8209147f59becdb2881f16e2c916f13fd4837f5b6d21aad1f5c6cfbcba0a6df0689969fbc87d6de572513a504a435  10-emulationstation.sh
+6df39f0a647ab1b14b92cff9b2ec4bbeff2ca9bc3dc23ac00c416c20561f71fbd3df1afce707452a5d9cdf62ebd01f0c4601261afac16ad621c1cc4275f6435c  es_systems.cfg
+"
