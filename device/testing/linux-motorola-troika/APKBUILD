@@ -1,0 +1,68 @@
+# Reference: <https://postmarketos.org/vendorkernel>
+# Kernel config based on: arch/arm64/configs/(CHANGEME!)
+
+pkgname=linux-motorola-troika
+pkgver=4.14.113
+pkgrel=1
+pkgdesc="Motorola One Action kernel fork"
+arch="aarch64"
+_carch="arm64"
+_flavor="motorola-troika"
+url="https://kernel.org"
+license="GPL-2.0-only"
+options="!strip !check !tracedeps pmb:cross-native"
+makedepends="
+	android-tools
+	bash
+	bc
+	bison
+	devicepkg-dev
+	findutils
+	flex
+	openssl-dev
+	perl
+	linux-headers
+	coreutils
+"
+
+echo $INSTALL_DTBS_PATH
+
+# Fix GCCH error
+
+export REPLACE_GCCH=0
+
+# Source
+_repository="kernel_motorola_exynos9610"
+_commit="08a7c643879ae39f4a8b9f6a8a4c6dcab513fb17"
+_config="config-$_flavor.$arch"
+source="
+	$pkgname-$_commit.tar.gz::https://github.com/Sweeistaken/$_repository/archive/$_commit.tar.gz
+	$_config
+        mgeneral-fix.patch        
+"
+builddir="$srcdir/$_repository-$_commit"
+_outdir="out"
+
+prepare() {
+	default_prepare
+	. downstreamkernel_prepare
+}
+
+build() {
+	unset LDFLAGS
+	make O="$_outdir" ARCH="$_carch" CC="${CC:-gcc}" \
+		KBUILD_BUILD_VERSION="$((pkgrel + 1 ))-postmarketOS"
+}
+
+package() {
+	downstreamkernel_package "$builddir" "$pkgdir" "$_carch" \
+		"$_flavor" "$_outdir"
+        make dtbs_install O="$_outdir" ARCH="$_carch" \
+		INSTALL_DTBS_PATH=$pkgdir/boot/dtbs
+}
+
+sha512sums="
+35b6e4beef3dd8d46258abf09fb62605101dd261ee629520489f85ee3f508e512d249c9de9b061d7cb157ab99e0d7bb54f7d7dca87c2794ccd006ce81989ec26  linux-motorola-troika-08a7c643879ae39f4a8b9f6a8a4c6dcab513fb17.tar.gz
+27a6f8c76f04e709433eb39f67a0f05caa66d44a1a66b965169521112f9d398f1a74acd00c1fdc35c2a5812adf9bf34f396f739c50406144a679f038b4948bb3  config-motorola-troika.aarch64
+5a7c0a235f2bc605266095bc6f20890e456253b3a7d058b152690a44552a20514b276dba11fd603b43b60f5c3ee9b5515d8d79448ba0cc62b7f81d2437b98e2e  mgeneral-fix.patch
+"
