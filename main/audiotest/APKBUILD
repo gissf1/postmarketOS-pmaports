@@ -1,0 +1,42 @@
+# Contributor: Luca Weiss <luca@lucaweiss.eu>
+# Maintainer: Luca Weiss <luca@lucaweiss.eu>
+pkgname=audiotest
+pkgver=0_git20240926
+_commit="8b9777142b9b573a118459cf118363ca5129936b"
+pkgrel=0
+pkgdesc="ALSA Conformance Test"
+url="https://chromium.googlesource.com/chromiumos/platform/audiotest/+/HEAD/alsa_conformance_test.md"
+arch="all"
+license="BSD-3-Clause"
+makedepends="alsa-lib-dev"
+#source="https://chromium.googlesource.com/chromiumos/platform/audiotest/+archive/$_commit.tar.gz" # TODO
+source="https://public.lucaweiss.eu/tmp/audiotest-8b9777142b9b573a118459cf118363ca5129936b.tar.gz"
+builddir="$srcdir/audiotest"
+options="!check" # no tests
+
+_disturl="dev.alpinelinux.org:/archive/$pkgname/"
+
+snapshot() {
+	clean
+	deps
+	mkdir -p "$srcdir" && cd "$srcdir"
+	git clone https://chromium.googlesource.com/chromiumos/platform/audiotest
+	git -C audiotest switch -d "$_commit"
+	tar cvf $SRCDEST/$pkgname-$_commit.tar.gz audiotest
+	rsync --progress -La $SRCDEST/$pkgname-$_commit.tar.gz $_disturl
+}
+
+build() {
+	make alsa_conformance_test
+}
+
+package() {
+	install -Dm755 alsa_conformance_test/alsa_conformance_test \
+		"$pkgdir"/usr/bin/alsa_conformance_test
+	install -Dm755 script/alsa_conformance_test.py \
+		"$pkgdir"/usr/bin/alsa_conformance_test.py
+}
+
+sha512sums="
+7575da0b45b1179fec504798139552076dec8b93f0f86b2591becee42a414c5657f1562266a7c8eb1c7bcd012afb8d6ae500e2d55307ffb7474eeb264a74e897  audiotest-8b9777142b9b573a118459cf118363ca5129936b.tar.gz
+"
