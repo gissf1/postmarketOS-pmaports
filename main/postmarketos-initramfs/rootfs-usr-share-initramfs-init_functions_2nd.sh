@@ -202,11 +202,18 @@ handle_first_boot() {
 	
 	echo "Using device: $boot_device"
 	
+	# TODO: necessary to get repart to work (else fails with error about no temp
+	# dir), but since /tmp is in the initramfs and is lost at switchroot, I have no
+	# clue what the implications of this are.
+	export TMPDIR=/tmp
+
 	# Run systemd-repart to create partitions
 	if ! systemd-repart --dry-run=no "$boot_device"; then
 		echo "ERROR: systemd-repart failed"
 		fail_halt_boot
 	fi
+
+	set -x
 	
 	# Find the newly created root partition
 	find_root_partition

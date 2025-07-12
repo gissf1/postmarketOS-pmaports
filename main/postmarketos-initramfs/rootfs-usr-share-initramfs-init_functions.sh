@@ -619,7 +619,9 @@ wait_partition() {
 	fi
 
 	show_splash "Waiting for $description partition..."
-	for _ in $(seq 1 30); do
+	# DO NOT MERGE!!!
+	for _ in $(seq 1 3); do
+	# for _ in $(seq 1 30); do
 		sleep 1
 		$findfunc partition
 		if [ -n "$partition" ]; then
