@@ -213,8 +213,6 @@ handle_first_boot() {
 		fail_halt_boot
 	fi
 
-	set -x
-	
 	# Find the newly created root partition
 	find_root_partition
 	if [ -z "$PMOS_ROOT" ]; then

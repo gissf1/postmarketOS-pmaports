@@ -4,3 +4,4 @@
 /usr/lib/repart.d
 /usr/lib/sysusers.d
 /usr/sbin/mkfs.btrfs
+/usr/bin/jq

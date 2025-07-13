@@ -406,6 +406,35 @@ pretty_dm_path() {
 	echo "$name"
 }
 
+get_boot_device() {
+	modprobe efivarfs
+	mount -t efivarfs efivarfs /sys/firmware/efi/efivars || true
+	
+	local efi_var="$(ls /sys/firmware/efi/efivars/LoaderDevicePartUUID-*)"
+	local part_uuid
+	local device
+	
+	# FIXME: this isn't a file?! -e (and -f, and so on) always fail on this path
+	# if [ ! -e "$efi_var" ]; then
+	# 	echo "ERROR: LoaderDevicePartUUID not found - not booted via EFI or efivarfs failed?"
+	# 	return 1
+	# fi
+	
+	# Read UUID, skip first 4 bytes (EFI attributes), convert to lowercase
+	# https://docs.kernel.org/filesystems/efivarfs.html
+	part_uuid=$(dd if="$efi_var" bs=1 skip=4 2>/dev/null | tr -d '\0' | tr '[:upper:]' '[:lower:]')
+	
+	# Find device with matching PARTUUID
+	device=$(blkid -t "PARTUUID=$part_uuid" -o device)
+	if [ -z "$device" ]; then
+		echo "ERROR: Could not find device with PARTUUID=$part_uuid"
+		return 1
+	fi
+	
+	# Get parent device by following symlinks in sysfs
+	echo /dev/$(basename $(dirname $(readlink /sys/class/block/$(basename $device))))
+}
+
 # Prints the path to the partition if found, or nothing.
 find_partition() {
 	# $1: UUID of partition if known
@@ -677,6 +706,7 @@ mount_root_partition() {
 
 	local partition
 
+	# FIXME: if this fails, use get_boot_disk + UUID for rootfs to get root partition
 	find_root_partition partition
 
 	echo "Mount root partition ($partition) to /sysroot (read-write) with options ${rootfsopts#,}"
@@ -712,9 +742,39 @@ mount_root_partition() {
 		mount --bind /stowaway/.stowaways/pmos/ /sysroot
 	fi
 
-	if ! [ -e /sysroot/etc/os-release ]; then
-		show_splash "ERROR: root partition does not contain a root filesystem\\nhttps://postmarketos.org/troubleshooting"
-		fail_halt_boot
+	# Check if this is an immutable layout (no /usr content)
+	if [ ! -e /sysroot/usr/lib/os-release ]; then
+		init="/usr/sbin/init"
+	    echo "Detected possible immutable layout, mounting usr partition..."
+    
+	    # Create usr mountpoint
+	    mkdir -p /sysroot/usr
+
+	    # Paper over /usr merge being incomplete in Alpine packaging
+	    ln -s usr/lib /sysroot/ 2>/dev/null || true
+	    ln -s usr/bin /sysroot/ 2>/dev/null || true
+	    ln -s usr/sbin /sysroot/ 2>/dev/null || true
+    
+	    # Find usr partition
+	    local boot_disk usr_partition
+		boot_disk="$(get_boot_device)"
+	    set -x
+	    # FIXME: don't hardcode UUID, it's arch-specific
+	    usr_partition="$boot_disk$(parted "$boot_disk" print --json | jq '.disk.partitions[] | select((."type-uuid"=="b0e01050-ee5f-4390-949a-9101b17104e9") and (.flags | index("no_automount") | not )).number')"
+	    set +x
+    
+	    if [ -z "$usr_partition" ]; then
+	        echo "ERROR: usr partition not found for immutable layout"
+	        show_splash "ERROR: usr partition not found\\nhttps://postmarketos.org/troubleshooting"
+	        fail_halt_boot
+	    fi
+		btrfs device scan
+    
+	    echo "Mount usr partition ($usr_partition) to /sysroot/usr (read-only)"
+	    mount -t btrfs -o ro "$usr_partition" /sysroot/usr
+	# if ! [ -e /sysroot/etc/os-release ]; then
+	# 	show_splash "ERROR: root partition does not contain a root filesystem\\nhttps://postmarketos.org/troubleshooting"
+	# 	fail_halt_boot
 	fi
 }
 

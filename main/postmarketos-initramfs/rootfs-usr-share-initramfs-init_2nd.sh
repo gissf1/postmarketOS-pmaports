@@ -100,6 +100,10 @@ done
 # with /dev/log in there.
 rm /dev/log 2>/dev/null || true
 
+# FIXME: hack...
+ls -hal /sysroot/usr/lib/systemd/systemd
+init=/usr/lib/systemd/systemd
+
 # shellcheck disable=SC2093
 exec switch_root /sysroot "$init"
 
