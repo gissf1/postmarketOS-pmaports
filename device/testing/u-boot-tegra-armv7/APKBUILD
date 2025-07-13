@@ -19,12 +19,14 @@ makedepends="
 	py3-setuptools
 	python3-dev
 	swig
-	"
+"
 checkdepends=""
 install=""
 options="!check !strip pmb:cross-native"
 commit="fd98452486e37d34c5480f1d162d91bbb30d0b44"
-source="$pkgname-${pkgver/_/-}.tar.bz2::https://gitlab.com/clamor-s/u-boot/-/archive/$commit/u-boot-$commit.tar.bz2"
+source="$pkgname-${pkgver/_/-}.tar.bz2::https://gitlab.com/clamor-s/u-boot/-/archive/$commit/u-boot-$commit.tar.bz2
+	u-boot-tegra-armv7.post-upgrade
+"
 builddir="$srcdir/u-boot-$commit/"
 board_configs="
 	chagall:chagall
@@ -131,4 +133,5 @@ done
 
 sha512sums="
 50ec70a04e9a36056a73ea9947938eff71cd230a6121165a8f38a18c040569a09c1d895f273a39245535d2d61204bd71becd4de04af09d833944a9f3fd78f352  u-boot-tegra-armv7-2025.07.tar.bz2
+f53f815f885238cded4949e8d8b1fe73e92b9128162f520bf4c0a66af31fecee789c839c94fadf12b8826fb5848e1671211f8d830884de45c95e511ac339f684  u-boot-tegra-armv7.post-upgrade
 "
