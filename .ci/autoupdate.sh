@@ -2,7 +2,7 @@
 
 if [ "$(id -u)" = 0 ]; then
 	set -x
-	apk add git openssh-keygen grep curl
+	apk add git openssh-keygen grep curl llvm
 	wget "https://gitlab.postmarketos.org/postmarketOS/ci-common/-/raw/master/install_pmbootstrap.sh"
 	sh ./install_pmbootstrap.sh
 	exec su "${TESTUSER:-pmos}" -c "sh -e $0 $*"
