@@ -228,21 +228,23 @@ handle_first_boot() {
 	
 	# Run systemd-firstboot
 	echo "Setting up system configuration..."
+	# FIXME: get this stuff from unl0kr or ??
 	systemd-firstboot --root=/sysroot \
+		--keymap=us \
 		--locale=en_US.UTF-8 \
+		--timezone="America/Los_Angeles" \
+	    --setup-machine-id \
 		--hostname="$firstboot_hostname"
 	
 	# Create user with systemd-sysusers
 	echo "Creating user account..."
 	temp_creds=$(mktemp -d)
+	temp_sysusers=$(mktemp)
 	echo "$firstboot_password" > "$temp_creds/passwd.plaintext-password.$firstboot_username"
-	
-	echo "u $firstboot_username - \"Default User\" /home/$firstboot_username" | \
-		SYSTEMD_CREDENTIAL_PATH="$temp_creds" \
-		systemd-sysusers --root=/sysroot --inline -
-	
-	# Clean up
-	rm -rf "$temp_creds"
+	echo "u $firstboot_username - \"Default User\" /home/$firstboot_username" > "$temp_sysusers"
+	SYSTEMD_CREDENTIAL_PATH="$temp_creds" \
+	    systemd-sysusers --root=/sysroot "$temp_sysusers"
+	rm -rf "$temp_creds" "$temp_sysusers"
 	
 	echo "First boot setup complete"
 }

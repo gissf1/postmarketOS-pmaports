@@ -1,4 +1,3 @@
-/usr/bin/jq
 /usr/bin/systemd-firstboot
 /usr/bin/systemd-repart
 /usr/bin/systemd-sysusers
@@ -6,3 +5,4 @@
 /usr/lib/sysusers.d
 /usr/sbin/mkfs.btrfs
 /usr/sbin/veritysetup
+/usr/share/zoneinfo/
