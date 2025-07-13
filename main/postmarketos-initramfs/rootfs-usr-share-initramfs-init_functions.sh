@@ -99,6 +99,9 @@ parse_cmdline_item() {
 			# shellcheck disable=SC2034
 			log_info=y
 			;;
+		usrhash)
+			usrhash="$value"
+			;;
 		[![:alpha:]_]* | [[:alpha:]_]*[![:alnum:]_]*)
 			# invalid shell variable, ignore it
 			;;
@@ -353,7 +356,7 @@ mount_subpartitions() {
 	done
 
 	attempt_start=$(get_uptime_seconds)
-	wait_seconds=10
+	wait_seconds=1 # DO NOT MERGE!!
 	echo "Trying to mount subpartitions for $wait_seconds seconds..."
 	find_root_partition
 	subpartitions_found=0
@@ -698,6 +701,43 @@ has_unallocated_space() {
 		head -n1 | grep -qi "free space"
 }
 
+# Function to extract UUIDs from usrhash
+extract_uuids_from_usrhash() {
+    local hash="$1"
+    
+    # Validate input length (should be 64 hex characters = 256 bits)
+    if [ ${#hash} -ne 64 ]; then
+        echo "Error: usrhash should be 64 hex characters (256 bits)" >&2
+        return 1
+    fi
+    
+    # Extract first 128 bits (32 hex chars) for /usr partition UUID
+    local usr_uuid_raw="${hash:0:32}"
+    
+    # Extract last 128 bits (32 hex chars) for verity partition UUID  
+    local verity_uuid_raw="${hash:32:32}"
+    
+    # Format as proper UUIDs (xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx)
+    local usr_uuid="${usr_uuid_raw:0:8}-${usr_uuid_raw:8:4}-${usr_uuid_raw:12:4}-${usr_uuid_raw:16:4}-${usr_uuid_raw:20:12}"
+    local verity_uuid="${verity_uuid_raw:0:8}-${verity_uuid_raw:8:4}-${verity_uuid_raw:12:4}-${verity_uuid_raw:16:4}-${verity_uuid_raw:20:12}"
+    
+    echo "USR_PARTITION_UUID=$usr_uuid"
+    echo "VERITY_PARTITION_UUID=$verity_uuid"
+    echo "VERITY_ROOT_HASH=$hash"
+}
+
+# Resolve the given partuuid to a block device
+find_partuuid() {
+	local uuid="$1"
+	local path=/dev/disk/by-partuuid/"$uuid"
+
+	if [ ! -L "$path" ]; then
+		echo ""
+		return
+	fi
+	echo "$(readlink -f "$path")"
+}
+
 mount_root_partition() {
 	# Don't mount root if it is already mounted
 	if mountpoint -q /sysroot; then
@@ -756,22 +796,50 @@ mount_root_partition() {
 	    ln -s usr/sbin /sysroot/ 2>/dev/null || true
     
 	    # Find usr partition
-	    local boot_disk usr_partition
-		boot_disk="$(get_boot_device)"
-	    set -x
-	    # FIXME: don't hardcode UUID, it's arch-specific
-	    usr_partition="$boot_disk$(parted "$boot_disk" print --json | jq '.disk.partitions[] | select((."type-uuid"=="b0e01050-ee5f-4390-949a-9101b17104e9") and (.flags | index("no_automount") | not )).number')"
-	    set +x
+	 #    local boot_disk usr_partition
+		# boot_disk="$(get_boot_device)"
+	 #    set -x
+	 #    # FIXME: don't hardcode UUID, it's arch-specific
+	 #    usr_partition="$boot_disk$(parted "$boot_disk" print --json | jq '.disk.partitions[] | select((."type-uuid"=="b0e01050-ee5f-4390-949a-9101b17104e9") and (.flags | index("no_automount") | not )).number')"
+	 #    set +x
+
+		if [ -n "$usrhash" ]; then
+		    # Extract UUIDs
+		    eval $(extract_uuids_from_usrhash "$usrhash")
     
-	    if [ -z "$usr_partition" ]; then
-	        echo "ERROR: usr partition not found for immutable layout"
-	        show_splash "ERROR: usr partition not found\\nhttps://postmarketos.org/troubleshooting"
-	        fail_halt_boot
-	    fi
-		btrfs device scan
+		    # Find the actual device paths
+		    readlink -f /dev/disk/by-partuuid/7a03694d-959e-d96e-010b-9d337933d708
+		    USR_DEVICE=$(find_partuuid "$USR_PARTITION_UUID")
+		    VERITY_DEVICE=$(find_partuuid "$VERITY_PARTITION_UUID")
+
+		    if [ -z "$USR_DEVICE" ]; then
+		    	echo "ERROR: Unable locate /usr partition: $USR_PARTITION_UUID"
+		        fail_halt_boot
+	    	fi
+		    if [ -z "$VERITY_DEVICE" ]; then
+		    	echo "ERROR: Unable locate /usr verity partition: $VERITY_PARTITION_UUID"
+		        fail_halt_boot
+	    	fi
     
-	    echo "Mount usr partition ($usr_partition) to /sysroot/usr (read-only)"
-	    mount -t btrfs -o ro "$usr_partition" /sysroot/usr
+		    # Set up dm-verity
+		    if ! veritysetup open "$USR_DEVICE" usr-verified "$VERITY_DEVICE" "$VERITY_ROOT_HASH"; then
+		    	echo "ERROR: Unable to create verity mapping for /usr partition"
+		        fail_halt_boot
+		    fi
+    
+		    # Mount the verified /usr
+		    mount -t auto -o ro /dev/mapper/usr-verified /sysroot/usr
+		fi
+    
+	 #    if [ -z "$usr_partition" ]; then
+	 #        echo "ERROR: usr partition not found for immutable layout"
+	 #        show_splash "ERROR: usr partition not found\\nhttps://postmarketos.org/troubleshooting"
+	 #        fail_halt_boot
+	 #    fi
+		# btrfs device scan
+    
+	 #    echo "Mount usr partition ($usr_partition) to /sysroot/usr (read-only)"
+	 #    mount -t btrfs -o ro "$usr_partition" /sysroot/usr
 	# if ! [ -e /sysroot/etc/os-release ]; then
 	# 	show_splash "ERROR: root partition does not contain a root filesystem\\nhttps://postmarketos.org/troubleshooting"
 	# 	fail_halt_boot

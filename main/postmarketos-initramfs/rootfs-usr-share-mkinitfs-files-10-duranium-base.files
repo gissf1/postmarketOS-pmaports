@@ -1,7 +1,8 @@
+/usr/bin/jq
 /usr/bin/systemd-firstboot
 /usr/bin/systemd-repart
 /usr/bin/systemd-sysusers
 /usr/lib/repart.d
 /usr/lib/sysusers.d
 /usr/sbin/mkfs.btrfs
-/usr/bin/jq
+/usr/sbin/veritysetup
