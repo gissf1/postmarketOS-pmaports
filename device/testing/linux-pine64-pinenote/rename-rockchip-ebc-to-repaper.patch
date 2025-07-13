@@ -1,0 +1,68 @@
+Patch-Source: https://pine64.org/documentation/PineNote/Development/
+From: Antoine Martin <dev@ayakael.net>
+Date: Fri, 11 Jul 2025 19:45:47 -0400
+Subject: [PATCH] Rename rockchip-ebc drm to repaper
+
+For mesa to work on the Pinenote, it needs to be patched to add the
+driver entry point. The alternative to this, is the renaming of the
+ebc driver to an existing mesa driver entry point. A good existing
+name can be “repaper”.
+
+---
+
+diff --git a/drivers/gpu/drm/rockchip/rockchip_ebc.c.orig b/drivers/gpu/drm/rockchip/rockchip_ebc.c
+index 499328855b..0737718e64 100644
+--- a/drivers/gpu/drm/rockchip/rockchip_ebc.c.orig
++++ b/drivers/gpu/drm/rockchip/rockchip_ebc.c
+@@ -617,7 +617,10 @@ static const struct drm_driver rockchip_ebc_drm_driver = {
+ 	DRM_FBDEV_SHMEM_DRIVER_OPS,
+ 	.major			= 0,
+ 	.minor			= 3,
+-	.name			= "rockchip-ebc",
++	/** named repaper as hack to use unpatched mesa
++	 * see https://pine64.org/documentation/PineNote/Development/
++	 */
++	.name			= "repaper",
+ 	.desc			= "Rockchip E-Book Controller",
+ 	.driver_features	= DRIVER_ATOMIC | DRIVER_GEM | DRIVER_MODESET,
+ 	.fops			= &rockchip_ebc_fops,
+@@ -2352,7 +2355,10 @@ static struct platform_driver rockchip_ebc_driver = {
+ 	.remove		= rockchip_ebc_remove,
+ 	.shutdown	= rockchip_ebc_shutdown,
+ 	.driver		= {
+-		.name		= "rockchip-ebc",
++		/** named repaper as hack to use unpatched mesa
++		 * see https://pine64.org/documentation/PineNote/Development/
++		 */
++		.name		= "repaper",
+ 		.of_match_table	= rockchip_ebc_of_match,
+ 		.pm		= &rockchip_ebc_dev_pm_ops,
+ 	},
+diff --git a/drivers/gpu/drm/tiny/repaper.c.orig b/drivers/gpu/drm/tiny/repaper.c
+index 5c3b51eb0a..0cc9ff6ab5 100644
+--- a/drivers/gpu/drm/tiny/repaper.c.orig
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -915,7 +915,10 @@ static const struct drm_driver repaper_driver = {
+ 	.fops			= &repaper_fops,
+ 	DRM_GEM_DMA_DRIVER_OPS_VMAP,
+ 	DRM_FBDEV_DMA_DRIVER_OPS,
+-	.name			= "repaper",
++	/** named repaper-disabled as hack to use unpatched mesa
++	 * see https://pine64.org/documentation/PineNote/Development/
++	 */
++	.name			= "repaper-disabled",
+ 	.desc			= "Pervasive Displays RePaper e-ink panels",
+ 	.major			= 1,
+ 	.minor			= 0,
+@@ -1139,7 +1142,10 @@ static void repaper_shutdown(struct spi_device *spi)
+ 
+ static struct spi_driver repaper_spi_driver = {
+ 	.driver = {
+-		.name = "repaper",
++		/** named repaper-disabled as hack to use unpatched mesa
++		 * see https://pine64.org/documentation/PineNote/Development/
++		 */
++		.name = "repaper-disabled",
+ 		.of_match_table = repaper_of_match,
+ 	},
+ 	.id_table = repaper_id,
