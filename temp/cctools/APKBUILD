@@ -1,0 +1,116 @@
+maintainer="Aster Boese <asterboese@mailbox.org>"
+pkgname=cctools
+# These update together so they don't need to be the same version.
+pkgver=1010.6
+_ld64ver=951.9
+pkgrel=0
+pkgdesc="Apple cctools port for Linux and *BSD"
+url="https://github.com/tpoechtrager/cctools-port"
+arch="all"
+license="APSL-2.0"
+makedepends="
+	clang
+	libdispatch-dev
+	lld
+	llvm-dev
+	ossp-uuid-dev
+	xar-dev
+"
+subpackages="
+	$pkgname-dev
+	$pkgname-doc
+	$pkgname-objectdump:_objectdump
+	$pkgname-ar:_tool
+	$pkgname-as:_tool
+	$pkgname-bitcode-strip:_tool
+	$pkgname-check-dylib:_tool
+	$pkgname-checksyms:_tool
+	$pkgname-cmpdylib:_tool
+	$pkgname-codesign-allocate:_tool
+	$pkgname-ctf-insert:_tool
+	$pkgname-inout:_tool
+	$pkgname-install-name-tool:_tool
+	$pkgname-ld:_tool
+	$pkgname-libtool:_tool
+	$pkgname-lipo:_tool
+	$pkgname-machocheck:_tool
+	$pkgname-makerelocs:_tool
+	$pkgname-mtoc:_tool
+	$pkgname-mtor:_tool
+	$pkgname-nm:_tool
+	$pkgname-nmedit:_tool
+	$pkgname-otool:_tool
+	$pkgname-pagestuff:_tool
+	$pkgname-ranlib:_tool
+	$pkgname-redo-prebinding:_tool
+	$pkgname-seg-addr-table:_tool
+	$pkgname-seg-hack:_tool
+	$pkgname-segedit:_tool
+	$pkgname-size:_tool
+	$pkgname-strings:_tool
+	$pkgname-strip:_tool
+	$pkgname-unwinddump:_tool
+	$pkgname-vtool:_tool
+	$pkgname-cross-as:_cross_as
+	"
+source="$pkgname-$pkgver.tar.gz::$url/archive/refs/heads/$pkgver-ld64-$_ld64ver.tar.gz"
+builddir="$srcdir/$pkgname-port-$pkgver-ld64-$_ld64ver/$pkgname"
+# No tests
+options="!check"
+
+# Requires Clang
+CC=clang
+CXX=clang++
+LD=lld
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--target=$CTARGET \
+		--prefix=/usr \
+	make
+}
+
+package() {
+	make DESTDIR=$pkgdir install
+
+	# Workaround XNU headers
+	sed -i 's_#include_//_g' $builddir/include/mach-o/loader.h
+	sed -i -e 's=<stdint.h>=\n#include <stdint.h>\ntypedef int integer_t;\ntypedef integer_t cpu_type_t;\ntypedef integer_t cpu_subtype_t;\ntypedef integer_t cpu_threadtype_t;\ntypedef int vm_prot_t;=g' $builddir/include/mach-o/loader.h
+}
+
+dev() {
+	mkdir -p $subpkgdir/usr/include/cctools
+	cp -r $builddir/include/* \
+		$subpkgdir/usr/include/cctools/
+}
+
+_tool() {
+	tool="${subpkgname#*-}"
+	tool="${tool//-/_}"
+	install_if="cctools"
+
+	mkdir -p $subpkgdir/usr/bin
+	mv $pkgdir/usr/bin/$CTARGET-$tool \
+		$subpkgdir/usr/bin/$subpkgname
+}
+
+_objectdump() {
+	install_if="cctools"
+
+	mkdir -p $subpkgdir/usr/bin
+	mv $pkgdir/usr/bin/$CTARGET-ObjectDump \
+		$subpkgdir/usr/bin/$subpkgname
+}
+
+_cross_as() {
+	pkgdesc="cctools cross-assemblers"
+	install_if="cctools"
+
+	amove usr/libexec/as
+}
+
+sha512sums="
+04ebe6c0bbd3542a191ae0e2563d0d25a176b5f0a8f8b54937dc3e1c0c642a2cf7eb0903ee9137f13f9d546439a39ddbdb4b3c4c5bb721da344797705d4654ed  cctools-1010.6.tar.gz
+"

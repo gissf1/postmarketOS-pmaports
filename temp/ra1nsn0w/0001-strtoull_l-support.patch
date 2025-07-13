@@ -1,0 +1,89 @@
+From bf8ef19063ea5fa47b07c4058e9f769e9a2d6acb Mon Sep 17 00:00:00 2001
+From: Aster Boese <asterboese@mailbox.org>
+Date: Mon, 7 Apr 2025 09:48:31 -0400
+Subject: [PATCH] strtoull_l support
+
+---
+ include/third-party/xlocale.h | 42 +++++++++++++++++++++++++++++++++++
+ ra1nsn0w/main.cpp             |  2 +-
+ ra1nsn0w/ra1nsn0w_plugins.cpp |  2 +-
+ 3 files changed, 44 insertions(+), 2 deletions(-)
+ create mode 100644 include/third-party/xlocale.h
+
+diff --git a/include/third-party/xlocale.h b/include/third-party/xlocale.h
+new file mode 100644
+index 0000000..4c46e0b
+--- /dev/null
++++ b/include/third-party/xlocale.h
+@@ -0,0 +1,42 @@
++#ifndef _COMPAT_XLOCALE_H_
++#define _COMPAT_XLOCALE_H_
++
++#define __NEED_locale_t
++#include <bits/alltypes.h>
++
++#include <locale.h>
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++long long strtoll_l(const char *start, char **end, int base, locale_t loc);
++unsigned long long strtoull_l(const char *start, char **end, int base,
++                              locale_t loc);
++long double strtold_l(const char *start, char **end, locale_t loc);
++
++#ifndef strtol_l
++#define strtol_l(s, p, base, l) strtol(s, p, base)
++#endif
++
++#ifndef strtoul_l
++#define strtoul_l(s, p, base, l) strtoul(s, p, base)
++#endif
++
++#ifndef wcstod_l
++#define wcstod_l(s, p, l) wcstod(s, p)
++#endif
++
++#ifndef wcstol_l
++#define wcstol_l(s, p, base, l) wcstol(s, p, base)
++#endif
++
++#ifndef wcstoul_l
++#define wcstoul_l(s, p, base, l) wcstoul(s, p, base)
++#endif
++
++#ifdef __cplusplus
++}
++#endif
++
++#endif /* _COMPAT_XLOCALE_H_ */
+diff --git a/ra1nsn0w/main.cpp b/ra1nsn0w/main.cpp
+index 57b731c..585e3aa 100644
+--- a/ra1nsn0w/main.cpp
++++ b/ra1nsn0w/main.cpp
+@@ -35,7 +35,7 @@ extern "C"{
+ #endif //WITH_PLUGIN_SUPPORT
+ 
+ #ifndef HAVE_STRTOUL_L
+-#define strtoul_l _strtoul_l
++#include "../include/third-party/xlocale.h"
+ #endif
+ 
+ #ifndef LC_GLOBAL_LOCALE
+diff --git a/ra1nsn0w/ra1nsn0w_plugins.cpp b/ra1nsn0w/ra1nsn0w_plugins.cpp
+index dd0384c..2f18844 100644
+--- a/ra1nsn0w/ra1nsn0w_plugins.cpp
++++ b/ra1nsn0w/ra1nsn0w_plugins.cpp
+@@ -223,7 +223,7 @@ static const char helpScreenKernelPatches[] =
+ 
+ 
+ #ifndef HAVE_STRTOUL_L
+-#define strtoul_l _strtoul_l
++#include "../include/third-party/xlocale.h"
+ #endif
+ 
+ #ifndef LC_GLOBAL_LOCALE
+-- 
+2.49.0
+

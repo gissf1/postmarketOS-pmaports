@@ -1,0 +1,47 @@
+maintainer="Aster Boese <asterboese@mailbox.org>"
+pkgname=apple-im4m
+pkgver=25.03.2
+pkgrel=0
+pkgdesc="Apple firmware manifest files"
+url="https://codeberg.org/JustSoup321/im4m-mirror"
+arch="noarch"
+license="CC-BY-3.0"
+makedepends="just pyimg4"
+subpackages="
+	apple-n51-im4m:_subpackage
+	apple-n61-im4m:_subpackage
+	apple-j81-im4m:_subpackage
+	apple-n71-im4m:_subpackage
+	apple-n71m-im4m:_subpackage
+	apple-j127-im4m:_subpackage
+	apple-n112-im4m:_subpackage
+	apple-j207-im4m:_subpackage
+	apple-j680-im4m:_subpackage
+	apple-d22-im4m:_subpackage
+	"
+source="$pkgname-$pkgver.tar.gz::https://codeberg.org/JustSoup321/im4m-mirror/archive/$pkgver.tar.gz"
+# No tests
+options="!check"
+builddir="$srcdir/im4m-mirror"
+
+build() {
+	just
+}
+
+package() {
+	mkdir -p "$pkgdir"
+}
+
+_subpackage() {
+	subpkgdesc="$pkgdesc (${subpkgname%-*})"
+	_codename="${subpkgname%-*}"
+	_codename="${_codename#*-}"
+	_im4m_file=$(find $builddir/build -type f -name "*${_codename}*")
+
+	mkdir -p $subpkgdir/usr/share/apple-im4m
+	install -Dm644 $_im4m_file \
+		$subpkgdir/usr/share/apple-im4m/
+}
+sha512sums="
+631509930104dcd3a4bca9cf31ea223203ba6870c543de34e40b6d85abeb1b03605db6cc73e65d75f66510699d3ad02fb0527387a15d01b6be515372f3065d84  apple-im4m-25.03.2.tar.gz
+"
