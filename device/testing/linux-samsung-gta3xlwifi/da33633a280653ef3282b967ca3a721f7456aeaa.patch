@@ -1,0 +1,22 @@
+From da33633a280653ef3282b967ca3a721f7456aeaa Mon Sep 17 00:00:00 2001
+From: NavaShield <88568085+NavaShield@users.noreply.github.com>
+Date: Fri, 2 May 2025 19:48:14 +0100
+Subject: [PATCH] Update Makefile
+
+---
+ Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 2a03be868d10..ef125e89e1b4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -4,6 +4,8 @@ SUBLEVEL = 302
+ EXTRAVERSION =
+ NAME = Blurry Fish Butt
+ 
++export ANDROID_MAJOR_VERSION=r
++
+ # *DOCUMENTATION*
+ # To see a list of typical targets execute "make help"
+ # More info can be located in ./README

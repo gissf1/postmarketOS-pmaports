@@ -1,0 +1,28 @@
+From ccfe87650eddcf1a0a8933f648b633553a73798b Mon Sep 17 00:00:00 2001
+From: NavaShield <88568085+NavaShield@users.noreply.github.com>
+Date: Sun, 4 May 2025 13:12:34 +0100
+Subject: [PATCH] Update f_conn_gadget.ioctl.h
+
+---
+ drivers/usb/gadget/function/f_conn_gadget.ioctl.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/drivers/usb/gadget/function/f_conn_gadget.ioctl.h b/drivers/usb/gadget/function/f_conn_gadget.ioctl.h
+index 25d62ad12..f611fcd96 100644
+--- a/drivers/usb/gadget/function/f_conn_gadget.ioctl.h
++++ b/drivers/usb/gadget/function/f_conn_gadget.ioctl.h
+@@ -25,7 +25,6 @@ enum {
+ 	CONN_GADGET_IOCTL_BIND_STATUS_UNBIND = 2
+ };
+ 
+-#if defined(__ANDROID__)||defined(__TIZEN__)
+ 
+ enum { 
+ 	CONN_GADGET_IOCTL_NR_0 = 0,
+@@ -42,6 +41,5 @@ enum {
+ #define CONN_GADGET_IOCTL_BIND_WAIT_NOTIFY	_IOR(CONN_GADGET_IOCTL_MAGIC_SIG, CONN_GADGET_IOCTL_NR_1, int)
+ #define CONN_GADGET_IOCTL_BIND_GET_STATUS	_IOR(CONN_GADGET_IOCTL_MAGIC_SIG, CONN_GADGET_IOCTL_NR_2, int)
+ #define CONN_GADGET_IOCTL_MAX_NR			CONN_GADGET_IOCTL_NR_MAX
+-#endif
+ 
+ #endif

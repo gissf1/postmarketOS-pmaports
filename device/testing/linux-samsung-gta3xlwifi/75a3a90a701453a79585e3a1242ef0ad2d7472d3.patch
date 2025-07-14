@@ -1,0 +1,21 @@
+From 75a3a90a701453a79585e3a1242ef0ad2d7472d3 Mon Sep 17 00:00:00 2001
+From: NavaShield <88568085+NavaShield@users.noreply.github.com>
+Date: Sun, 4 May 2025 22:11:28 +0100
+Subject: [PATCH] Update _uh.S
+
+---
+ init/_uh.S | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/init/_uh.S b/init/_uh.S
+index 714c572d2..bbe58d35e 100755
+--- a/init/_uh.S
++++ b/init/_uh.S
+@@ -1,6 +1,6 @@
+ #include <linux/uh.h>
+ 
+-#define uh_ELF_PATH "init/uh.elf"
++#define uh_ELF_PATH "../init/uh.elf"
+ 
+ #define SMC_64BIT_RET_MAGIC 0xC2000401
+ 
