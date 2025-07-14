@@ -1,6 +1,6 @@
 
 pkgname=linux-postmarketos-gs101
-pkgver=6.16_rc5
+pkgver=6.16_rc6
 pkgrel=0
 pkgdesc="Google gs101 mainline kernel"
 arch="aarch64"
@@ -65,5 +65,5 @@ package() {
 
 sha512sums="
 6c1b8818f5b965a80634f4475d168e5b964b254e2950740d29744b84151e1748352ea9e3721227417229820bd360a56e4eb2560976bfec83aed8904c92cd1e56  linux-postmarketos-gs101-fdb2bd96ffeb2bfdbfe943f9df5fa67760a75271.tar.gz
-2a579c9f0c57b9313b0804243024364f6a8cba868a2e4ecfa51f6147b5ae3644f17674291e4cce2ecdb9ede75be77fcc983c4358d0a0785b8ce1e4623ff2c285  config-postmarketos-gs101.aarch64
+7447d99af5b784402fcbc7ef60fbf8fdc5d194dd9426e239122c673006902f3b35a4ae0d3f73e9b62a402d12c0e2a861f1b760aad083312303075cc2d5837af2  config-postmarketos-gs101.aarch64
 "
