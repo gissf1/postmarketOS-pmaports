@@ -152,7 +152,8 @@ get_boot_device() {
 	modprobe efivarfs
 	mount -t efivarfs efivarfs /sys/firmware/efi/efivars || true
 	
-	local efi_var="$(ls /sys/firmware/efi/efivars/LoaderDevicePartUUID-*)"
+	local efi_var
+	efi_var="$(ls /sys/firmware/efi/efivars/LoaderDevicePartUUID-*)"
 	local part_uuid
 	local device
 	
@@ -174,7 +175,7 @@ get_boot_device() {
 	fi
 	
 	# Get parent device by following symlinks in sysfs
-	echo /dev/$(basename $(dirname $(readlink /sys/class/block/$(basename $device))))
+	echo /dev/"$(basename "$(dirname "$(readlink /sys/class/block/"$(basename "$device")")")")"
 }
 
 # Get first boot configuration values
@@ -188,7 +189,6 @@ get_firstboot_config() {
 # Handle first boot scenario
 handle_first_boot() {
 	local boot_device
-	local temp_creds
 	
 	echo "No root partition found - performing first boot setup"
 	show_splash "Creating root partition..."
@@ -235,16 +235,28 @@ handle_first_boot() {
 		--timezone="America/Los_Angeles" \
 	    --setup-machine-id \
 		--hostname="$firstboot_hostname"
-	
-	# Create user with systemd-sysusers
+
 	echo "Creating user account..."
-	temp_creds=$(mktemp -d)
-	temp_sysusers=$(mktemp)
-	echo "$firstboot_password" > "$temp_creds/passwd.plaintext-password.$firstboot_username"
-	echo "u $firstboot_username - \"Default User\" /home/$firstboot_username" > "$temp_sysusers"
-	SYSTEMD_CREDENTIAL_PATH="$temp_creds" \
-	    systemd-sysusers --root=/sysroot "$temp_sysusers"
-	rm -rf "$temp_creds" "$temp_sysusers"
-	
+	# Note: This creates a locked account
+    systemd-sysusers --root=/sysroot --inline \
+	    "u $firstboot_username - \"Default User\" /home/$firstboot_username /bin/sh"
+	echo "after sysusers, shadow:"
+	cat /sysroot/etc/shadow
+	echo "after sysusers, passwd:"
+	cat /sysroot/etc/passwd
+
+	# Then update user to set password
+	# TODO: Is there a better way? sysusers doesn't seem to support this...
+	echo "$firstboot_username:$firstboot_password" | chpasswd -R /sysroot
+	echo "after chpasswd"
+	cat /sysroot/etc/shadow
+
+	# Create tmpfiles.d fragment for home directory
+	mkdir -p /sysroot/etc/tmpfiles.d
+	cat > /sysroot/etc/tmpfiles.d/user-home.conf <<- EOF
+		# Create home directory for $firstboot_username
+		d /home/$firstboot_username 0755 $firstboot_username $firstboot_username - -
+	EOF
+
 	echo "First boot setup complete"
 }
