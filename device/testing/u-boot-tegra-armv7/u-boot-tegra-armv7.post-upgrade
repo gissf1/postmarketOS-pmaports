@@ -1,0 +1,8 @@
+#!/bin/sh
+echo "## An upgraded u-boot package was installed                   ##"
+echo "## Please check the content of /usr/share/u-boot-tegra-armv7/ ##"
+echo "## To upgrade please manually copy the u-boot-dtb-tegra.bin   ##"
+echo "## for the board to /boot and reboot into the bootloader menu ##"
+echo "## and select upgrade boot-loader.			    ##"
+
+exit 0
