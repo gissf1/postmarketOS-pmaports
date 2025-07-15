@@ -1,0 +1,25 @@
+# Maintainer: Antoine Martin (ayakael) <dev@ayakael.net>
+pkgname=rot8
+pkgver=1.0.0
+pkgrel=0
+pkgdesc="A screen rotation daemon"
+arch="all"
+url="https://github.com/efernau/rot8"
+license="MIT"
+makedepends="rust cargo"
+source="$pkgname-$pkgver.tar.gz::https://github.com/efernau/rot8/archive/refs/tags/v$pkgver.tar.gz"
+
+prepare() {
+	cargo fetch --locked
+}
+
+build() {
+	CARGO_TARGET_DIR=target	cargo build --frozen --release --all-features
+}
+
+package() {
+	install -Dm755 "$builddir"/target/release/rot8 "$pkgdir/usr/bin/rot8"
+}
+sha512sums="
+396773462da49b3df867c78e550b1a2d93bf5d7ad27887af7adcc8cd661cf717cc37e1cad59b5c93363baa09e27f5a895900a4cb5c36892973a175d403942a9b  rot8-1.0.0.tar.gz
+"

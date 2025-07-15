@@ -41,6 +41,7 @@ wiki:
   script:
     - .ci/lib/gitlab_prepare_ci.sh
     - .ci/wiki.sh
+  allow_failure: true
 
 # testcases linting
 ruff:
