@@ -1,0 +1,80 @@
+# Based on scx-scheds from arch linux team
+# Maintainer:
+pkgname=scx-scheds
+pkgver=1.0.13
+pkgrel=1
+pkgdesc="sched_ext schedulers and tools"
+url="https://github.com/sched-ext/scx"
+commit="c1507b0cc57be922834f27417a4052b2f3c4cd2c"
+arch="x86_64 aarch64"
+license="GPL-2.0-only"
+depends="
+	 libbpf
+	 bpftool
+	 bash
+	 jq
+	 libgcc
+	 libseccomp
+	 libelf
+	 musl
+	 protobuf
+	 zlib
+	 systemd
+	 bsd-compat-headers
+	 jq"
+makedepends="
+	    $depends
+	    cmake
+	    clang
+	    clang-dev
+	    clang-headers
+	    clang-libs
+	    git
+	    llvm20-libs
+	    llvm20-linker-tools
+		llvm20-dev
+	    libbpf-dev
+	    libseccomp-dev
+	    meson
+	    python3
+	    rust
+	    cargo
+	    systemd-libs
+	    systemd-dev
+		jq-dev
+		lld
+		"
+subpackages="
+	$pkgname-dbg"
+source="$pkgname-$pkgver.tar.gz::https://github.com/sched-ext/scx/archive/$commit.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver"
+
+prepare() {
+
+      mv "$srcdir/scx-$commit" "$srcdir/$pkgname-$pkgver"
+
+}
+
+build() {
+	abuild-meson \
+		-Dsystemd=enabled \
+		-Dlibbpf_a=disabled \
+		-Dbpftool=disabled \
+	        -Dwerror=false \
+		-Dwerror=false \
+	         output
+
+	meson compile -C output
+}
+
+check() {
+	meson test -C output --print-errorlogs
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install --no-rebuild -C output
+}
+
+sha512sums="
+b4fe3dff8d24d1891b26a432c4dd2720114b3e0facd37be0af642227e73b512dd28c5d4c0fb5a73a87b4e9838381169e54fb9aa24873c4311fb4bc6ee125ca4b  scx-scheds-1.0.13.tar.gz
+"
