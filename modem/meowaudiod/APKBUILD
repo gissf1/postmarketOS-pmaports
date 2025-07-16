@@ -1,0 +1,36 @@
+# Maintainer: NekoCWD <nekodevelopper@gmail.com>
+pkgname=meowaudiod
+pkgver=1.0
+pkgrel=0
+pkgdesc="Callaudiod replacement for qcom phones written on vala"
+url="https://gitlab.postmarketos.org/NekoCWD/meowaudiod"
+arch="all"
+license="GPL-3.0-or-later"
+makedepends="
+	pulseaudio-dev
+	dbus-glib-dev
+	glib-dev
+	gtk4.0-dev
+	libadwaita-dev
+	blueprint-compiler
+	desktop-file-utils
+	meson
+	vala
+	"
+source="https://gitlab.postmarketos.org/NekoCWD/meowaudiod/-/archive/v$pkgver/meowaudiod-v$pkgver.tar.gz"
+options="!check" # no tests
+builddir="$srcdir/meowaudiod-v$pkgver"
+provides="callaudiod=$pkgver-r$pkgrel"
+
+build() {
+	abuild-meson . output
+	meson compile ${JOBS:+-j ${JOBS}} -C output
+}
+
+package() {
+	DESTDIR="$pkgdir" meson install -C output --no-rebuild
+}
+
+sha512sums="
+546df968e763b9f9cd93ecaeabe6d2bd078d5d8f3898e95984daa999d90843bc6f2467d0834a78aae3ce33c74c863dda7aee39ec8a810b3d5fc5d507f68c130f  meowaudiod-v1.0.tar.gz
+"
