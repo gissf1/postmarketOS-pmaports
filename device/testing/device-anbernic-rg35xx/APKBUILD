@@ -1,0 +1,61 @@
+# Reference: <https://postmarketos.org/devicepkg>
+pkgname=device-anbernic-rg35xx
+pkgdesc="Anbernic RG35XX Series"
+pkgver=1
+pkgrel=3
+url="https://postmarketos.org"
+license="MIT"
+arch="aarch64"
+options="!check !archcheck"
+depends="
+	linux-anbernic-rg35xx
+	postmarketos-base
+"
+makedepends="devicepkg-dev"
+source="
+	deviceinfo
+	modules-initfs
+	extlinux.conf
+	30-device-firmware.files
+	anbernic,rg35xx-sp-v2-panel.panel
+	rtl8821cs_fw.bin
+	rtw8821c_fw.bin
+	rg35xx-control-mapper.py
+	rg35xx-control-mapper.service
+"
+
+build() {
+	devicepkg_build $startdir $pkgname
+}
+
+package() {
+	devicepkg_package $startdir $pkgname
+	install -Dm644 "$srcdir"/extlinux.conf \
+		"$pkgdir"/boot/extlinux/extlinux.conf
+	install -Dm644 "$srcdir"/30-device-firmware.files "$pkgdir/usr/share/mkinitfs/files/30-device-firmware.files"
+	install -Dm644 "$srcdir"/anbernic,rg35xx-sp-v2-panel.panel \
+		"$pkgdir"/lib/firmware/panels/anbernic,rg35xx-sp-v2-panel.panel
+
+	install -Dm644 "$srcdir"/rtl8821cs_fw.bin \
+		"$pkgdir"/lib/firmware/rtl_bt/rtl8821cs_fw.bin
+
+	install -Dm644 "$srcdir"/rtw8821c_fw.bin \
+		"$pkgdir"/lib/firmware/rtw88/rtw8821c_fw.bin
+
+	install -Dm755 "$srcdir"/rg35xx-control-mapper.py \
+		"$pkgdir"/usr/bin/rg35xx-control-mapper
+	install -Dm644 "$srcdir"/rg35xx-control-mapper.service \
+		"$pkgdir"/usr/lib/systemd/system/rg35xx-control-mapper.service
+}
+
+sha512sums="
+02c19d72293487de5d8d770aaffcba62dd4a1128db5ca90c02906e5f722e4b96cb39cc87bb98e05cde997aeabe8b28e811738325226fa7752acbcaf824da7e3d  deviceinfo
+e70bae17df23dcaaaea0e2d3616556f04baa23f8ee1357785c0f539bf97282d8ddff53953e155b72689bb73beb38c2da3d08de2a61e866684edfa10a6593885d  modules-initfs
+8afeb2f7f450af92bcf94a0a759f3eff58fed616e5eb07d4ae88bd79d6787455db8df010fbf9c240450bc5c01dd8f3577d7af0450b360d0605b29dcda826b9c9  extlinux.conf
+98b62cee9f9947296d62d0ab6abf31900c909ad4ab24e69b889f773e8769cab69948e2f15e91998a595c90ccccb6cbbb045e179c5a4ffaed43af2985c3d57d7a  30-device-firmware.files
+0f391d68ecc48f88b932a68586896ed245a5ccdf274a675b80f3a01bab3879a8fe31099c183dbe930c3398e56eab660eb5ea3b83f798a053236cfc70f2e6a80a  anbernic,rg35xx-sp-v2-panel.panel
+1d5d162faa94a071db6f75dfacc20d2907f2f70a25a7a4614b8d265ae140928702b985653c6fee99646cbcbdc8b5dc7dd7bfd7e653866a26266c131e4a26a4b4  rtl8821cs_fw.bin
+82ba6d12c444bc6db7252b5f15357415b6bc72cc89a2b6135eb9febebb1ed0c07c66dd3c2d26cabd3dd311ded271993bd08b08bbfc6fe6a3f27ed99ba81f77fc  rtw8821c_fw.bin
+20e1a5a3cfb1ecf4476b061bb18e7f2885fd9444342047c6efc8e5d38c08218d86d25b5c74c3b0d6fa9abf853b2791be021dbeb015cb25c1200e72f90f5feb0b  rg35xx-control-mapper.py
+b0376e8ba88323dd9332256f316c7414f2b854f6fc76595da0652f70bded149d22a09c2b987e88ef909c1a9f85edad62560acb34de0264056ff3875f2f97ba44  rg35xx-control-mapper.service
+"
