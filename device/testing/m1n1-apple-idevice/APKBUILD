@@ -1,0 +1,105 @@
+maintainer="Aster Boese <asterboese@mailbox.org>"
+pkgname=m1n1-apple-idevice
+_pkgname=m1n1
+pkgver=1.4.21_git20250620
+_commit="597508259201e1df445169dce401aaba695ca7a6"
+pkgrel=0
+pkgdesc="m1n1 bootloader for Apple Generic iDevice"
+url="https://github.com/HoolockLinux/m1n1"
+arch="aarch64"
+license="MIT"
+makedepends="
+	inkscape
+	imagemagick
+	postmarketos-artwork-icons
+	rustup
+	"
+checkdepends="
+	py3-construct
+	py3-pyserial
+	py3-pytest
+	python3
+	"
+subpackages="$pkgname-doc $pkgname-udev::noarch"
+source="https://github.com/HoolockLinux/m1n1/archive/$_commit.tar.gz
+	0001-vendor-dependencies-with-cargo-instead-of-git.patch
+	"
+builddir="$srcdir/$_pkgname-$_commit"
+# net: Cargo pulls crates
+options="net"
+
+export CARGO_HOME="$srcdir/cargo"
+export RUSTUP_HOME="$srcdir/rustup"
+
+prepare() {
+	default_prepare
+
+	# Show postmarketOS logo on boot
+	rm -r "$builddir"/data/bootlogo*
+
+	inkscape -w 48 -h 48 \
+		/usr/share/pixmaps/postmarketos-logo.svg \
+		-o "$builddir"/data/bootlogo_48.png
+	magick "$builddir"/data/bootlogo_48.png \
+		-background black \
+		-flatten -depth 8 \
+		rgba:"$builddir"/data/bootlogo_48.bin
+
+	inkscape -w 128 -h 128 \
+		/usr/share/pixmaps/postmarketos-logo.svg \
+		-o "$builddir"/data/bootlogo_128.png
+	magick "$builddir"/data/bootlogo_128.png \
+		-background black \
+		-flatten -depth 8 \
+		rgba:"$builddir"/data/bootlogo_128.bin
+
+	inkscape -w 256 -h 256 \
+		/usr/share/pixmaps/postmarketos-logo.svg \
+		-o "$builddir"/data/bootlogo_256.png
+	magick "$builddir"/data/bootlogo_256.png \
+		-background black \
+		-flatten -depth 8 \
+		rgba:"$builddir"/data/bootlogo_256.bin
+
+	# Use rustup to install bare-metal aarch64 target and our toolchain
+	rustup-init -q -y --default-toolchain=none --profile=minimal
+	. "$srcdir"/cargo/env
+	rustup default stable
+	rustup target add aarch64-unknown-none-softfloat
+
+	cd "$builddir"/rust
+	cargo vendor --locked
+}
+
+build() {
+	. "$srcdir"/cargo/env
+	make RELEASE=1 CHAINLOADING=1
+}
+
+check() {
+	python3 -m venv --clear --without-pip --system-site-packages .testenv
+	.testenv/bin/python3 -m pytest -v
+}
+
+package() {
+	install -Dm644 "$builddir"/build/m1n1-idevice.macho \
+		"$pkgdir"/usr/share/m1n1/m1n1-idevice.macho
+
+	install -Dm644 "$builddir"/LICENSE \
+		"$pkgdir"/usr/share/licenses/"$pkgname"/LICENSE
+
+	install -Dm644 "$builddir"/udev/80-m1n1.rules \
+		"$pkgdir"/usr/lib/udev/rules.d/80-m1n1.rules
+}
+
+# NOTE: This should be removed if m1n1 gets into aports
+udev() {
+	pkgdesc="$pkgdesc (udev rules)"
+
+	amove usr/lib/udev/rules.d/80-m1n1.rules
+}
+
+sha512sums="
+1682ef03485c3bfb3db63b87fd27eff25c9a7ccb3a98591c1942f0a485f3a48ed5594a2e020eda9da729c17d1deba1e42a2200746b2c8aa43b7d8c0d8930a4ef  597508259201e1df445169dce401aaba695ca7a6.tar.gz
+ae5b1baed8a6d48e28e3e0db1840c4bfacb34e9b6c4c614e5275a672b04687f135f348aab612d918d2778521efaa1215bb5c071034f222798dd7865d2952d9e9  0001-vendor-dependencies-with-cargo-instead-of-git.patch
+"
