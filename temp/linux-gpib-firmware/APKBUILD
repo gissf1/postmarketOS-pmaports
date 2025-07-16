@@ -1,0 +1,25 @@
+# Contributor: Robert Eckelmann <longnoserob@postmarketos.org>
+# Maintainer: Robert Eckelmann <longnoserob@postmarketos.org>
+pkgname=linux-gpib-firmware
+pkgver=1
+pkgrel=0
+pkgdesc="firmware files for use with Linux-GPIB interfaces"
+url="https://github.com/fmhess/linux_gpib_firmware"
+_commit="8a5c6c2c1a2adac4c770763a7236452a871a0113"
+options="!check pmb:cross-native"
+arch="noarch"
+license="proprietary"
+source="https://github.com/fmhess/linux_gpib_firmware/archive/$_commit.tar.gz"
+builddir="$srcdir/"
+
+package() {
+	mkdir -p "$pkgdir"/lib/firmware/gpib
+	# remove a binary which can be rebuild easily from source.
+	rm "$srcdir/linux_gpib_firmware-$_commit"/hp_82341/generate_firmware
+	cp -r "$srcdir/linux_gpib_firmware-$_commit/"* \
+		"$pkgdir"/lib/firmware/gpib/
+}
+
+sha512sums="
+0e0074e688b5277dde7e8e0d9b6c649c3afb44080ac101ffc59f387efab160ecec26c1f6504f7bf82652a4ef6f977540ca767fce6caff849a2566863a2aa0bab  8a5c6c2c1a2adac4c770763a7236452a871a0113.tar.gz
+"

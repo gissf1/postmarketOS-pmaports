@@ -1,0 +1,37 @@
+# Contributor: Robert Eckelmann <longnoserob@postmarketos.org>
+# Maintainer: Robert Eckelmann <longoserob@postmarketos.org>
+pkgname=fxload
+pkgver=1.0.29
+pkgrel=0
+pkgdesc="fxload firmware loader. Used with udev or devfs/hotplug."
+url='http://libusb.info/'
+arch="all"
+license="LGPL-2.1-only"
+options="!check pmb:cross-native"
+depends="libusb"
+makedepends="autoconf automake eudev-dev libtool libusb-dev linux-headers pkgconf"
+source="$pkgname-$pkgver.tar.gz::https://github.com/libusb/libusb/archive/refs/tags/v$pkgver.tar.gz"
+builddir="$srcdir/libusb-$pkgver/"
+
+build() {
+	NOCONFIGURE=1 ./autogen.sh
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--disable-udev \
+		--enable-static
+	cd libusb
+	make
+	cd ../examples
+	make
+}
+
+
+package () {
+	cd "$builddir/examples/.libs/"
+	install -m 755 -D fxload $pkgdir/usr/bin/fxload
+}
+sha512sums="
+98c5f7940ff06b25c9aa65aa98e23de4c79a4c1067595f4c73cc145af23a1c286639e1ba11185cd91bab702081f307b973f08a4c9746576dc8d01b3620a3aeb5  fxload-1.0.29.tar.gz
+"

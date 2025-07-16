@@ -1,0 +1,13 @@
+diff --git a/lib/libgpib.pc.in b/lib/libgpib.pc.in
+index e180cb89..0dc98fa1 100644
+--- a/lib/libgpib.pc.in
++++ b/lib/libgpib.pc.in
+@@ -6,7 +6,7 @@ includedir=@includedir@
+ 
+ Name: libgpib
+ Description:  Linux-GPIB the IEEE-488 card support package and measurement suite for LINUX
+-Version: @GPIB_SO_VERSION@
++Version: @PACKAGE_VERSION@
+ Requires: 
+ Libs: -lgpib
+ Cflags: -I${includedir}
