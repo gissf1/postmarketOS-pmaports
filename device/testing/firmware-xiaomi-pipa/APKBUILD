@@ -1,0 +1,116 @@
+# Maintainer: Arseniy Velikanov <me@adomerle.pw>
+pkgname=firmware-xiaomi-pipa
+pkgver=20241230
+pkgrel=0
+pkgdesc="Firmware for Xiaomi Pad 6"
+subpackages="
+	$pkgname-adreno
+	$pkgname-adsp
+	$pkgname-cdsp
+	$pkgname-awinic
+	$pkgname-nuvolta
+	$pkgname-novatek
+	$pkgname-hexagonfs
+	$pkgname-slpi
+	$pkgname-venus
+	"
+url="https://github.com/pipa-mainline/xiaomi-pipa-firmware"
+arch="aarch64"
+license="proprietary"
+options="!check !strip !archcheck !tracedeps textrels pmb:cross-native"
+
+_commit="842d35beffeda8c6d1b0e611b335543bf0e6b41e"
+
+source="
+	$pkgname.zip::$url/archive/$_commit.zip
+	hexagon_firmware.files
+	30-initramfs-firmware.files
+"
+
+builddir="$srcdir/xiaomi-pipa-firmware-$_commit"
+
+package() {
+	# parent package is empty
+	mkdir -p "$pkgdir"
+}
+
+# xiaomi pipa boots with secure boot, it can only load signed firmwares.
+adreno() {
+	pkgdesc="Xiaomi Pad 6 Adreno firmware"
+	depends="firmware-qcom-adreno-a650"
+
+	install -Dm644 "$builddir"/lib/firmware/sm8250/xiaomi/pipa/a650_zap.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8250/xiaomi/pipa/"
+}
+
+adsp() {
+	pkgdesc="Xiaomi Pad 6 adsp firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/sm8250/xiaomi/pipa/adsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8250/xiaomi/pipa/"
+}
+
+awinic() {
+	pkgdesc="Xiaomi Pad 6 awinic firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/awinic/aw88230_2113_pipa.bin -t \
+		"$subpkgdir/lib/firmware/awinic/"
+}
+
+cdsp() {
+	pkgdesc="Xiaomi Pad 6 cdsp firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/sm8250/xiaomi/pipa/cdsp* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8250/xiaomi/pipa/"
+}
+
+nuvolta() {
+	pkgdesc="Xiaomi Pad 6 nuvolta firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/nuvolta/rx1665.bin -t \
+		"$subpkgdir/lib/firmware/nuvolta/"
+}
+
+novatek() {
+	pkgdesc="Xiaomi Pad 6 novatek firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/novatek/nt36532_csot.bin -t \
+		"$subpkgdir/lib/firmware/novatek/"
+
+	install -Dm644 "$builddir"/lib/firmware/novatek/nt36532_tianma.bin -t \
+		"$subpkgdir/lib/firmware/novatek/"
+
+	install -Dm644 "$srcdir/30-initramfs-firmware.files" -t \
+		"$subpkgdir"/usr/share/mkinitfs/files
+}
+
+hexagonfs() {
+	pkgdesc="Xiaomi Pad 6 hexagonfs files"
+
+	mkdir "$subpkgdir"
+
+	while IFS="" read -r _i || [ -n "$_i" ]; do
+		[ ! -d $(dirname $_i) ] && mkdir -p $(dirname $_i)
+		install -Dm644 "$builddir/$_i" "$pkgdir/$_i"
+	done < "$srcdir/hexagon_firmware.files"
+}
+
+slpi() {
+	pkgdesc="Xiaomi Pad 6 slpi firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/sm8250/xiaomi/pipa/slpi* -t \
+		"$subpkgdir/lib/firmware/qcom/sm8250/xiaomi/pipa/"
+}
+
+venus() {
+	pkgdesc="Xiaomi Pad 6 venus firmware"
+
+	install -Dm644 "$builddir"/lib/firmware/sm8250/xiaomi/pipa/venus.mbn -t \
+		"$subpkgdir/lib/firmware/qcom/sm8250/xiaomi/pipa/"
+}
+
+sha512sums="
+7f9bb548e8178009d341f7f4792d18f7c44484667377ac02d4e796f96cd1703e77540a662899c89a74a40d34758df22689170a3e681d931772222e4746fb5012  firmware-xiaomi-pipa.zip
+f208de5e943e26654eb3f09f8a7875f415eac1c3b52aef47897e3b4824a29749bc394b8bb471c476230a64a60781fb31467795fb92af5bbb658a224ee5da4f71  hexagon_firmware.files
+69f3ae377ca5504907152f96ff1147a7db483446e722372b92cae986297e503a2dc7220ecb62fe8d65a86d2482dc54e1d07b9081bb03e2480f5bc1397abe0d17  30-initramfs-firmware.files
+"

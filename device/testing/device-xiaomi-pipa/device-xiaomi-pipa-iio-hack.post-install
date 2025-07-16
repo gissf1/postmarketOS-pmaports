@@ -1,0 +1,3 @@
+#!/bin/sh
+# HACK: Remove sensors other than accel because it causes iio-proxy to crash
+sed -i "s/ ssc-light ssc-proximity ssc-compass//g" /usr/lib/udev/rules.d/80-iio-sensor-proxy-libssc.rules
