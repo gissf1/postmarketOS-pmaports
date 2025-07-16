@@ -2,7 +2,7 @@
 # Maintainer: Henrik Grimler <henrik@grimler.se>
 pkgname=device-samsung-gts210lte
 pkgdesc="Samsung Galaxy Tab S2 9.7 LTE (2015)"
-pkgver=2
+pkgver=3
 pkgrel=0
 url="https://postmarketos.org"
 license="MIT"
@@ -26,6 +26,9 @@ build() {
 
 package() {
 	devicepkg_package $startdir $pkgname
+
+	install -D -m644 "$srcdir"/90-sec_touchscreen.rules \
+		"$pkgdir"/etc/udev/rules.d/90-sec_touchscreen.rules
 }
 
 nonfree_firmware() {
@@ -35,6 +38,6 @@ nonfree_firmware() {
 }
 
 sha512sums="
-5273aa03e972c777c1c01fd7f2d60ae70e9159c689d21a9dc288e35fec379d795fb34d74400204a1ac5c0c93c802ec9fc3bd6296929dc11824ea275c9d82425b  deviceinfo
+23d27cbe7ab51b1e01330bd974f93cb93a7e385b16e1d1579a6e4b102d8761de8057cff453dfa4fd8aac612570c43d535d6629d7f67acc2d23b2353d691177b2  deviceinfo
 0d23fae6de9b04a36f395068278b8a9054c33e435b24de943da1e55a0ee2d88ee932a3fd2f660596377b14474483edecb8357684f9b7bc2c53979c7f863fae52  90-sec_touchscreen.rules
 "
