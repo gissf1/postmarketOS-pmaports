@@ -1,0 +1,24 @@
+diff --git a/main.c b/main.c
+index b477e1a..dd1ab8b 100644
+--- a/main.c
++++ b/main.c
+@@ -335,18 +335,7 @@ parse_kmsg_line(char *buffer, ssize_t size)
+ 	end = NULL;
+ 	long ts = strtol(buffer, &end, 10);
+ 	if (end && end > buffer) {
+-		buffer = end + 1;
+-	}
+-
+-	long flags = 0;
+-	if (buffer[0] == '-') {
+-		buffer += 1;
+-	} else {
+-		end = NULL;
+-		flags = strtol(buffer, &end, 10);
+-		if (end && end > buffer) {
+-			buffer = end;
+-		}
++		buffer = end;
+ 	}
+ 
+ 	while (*buffer != ';') {
