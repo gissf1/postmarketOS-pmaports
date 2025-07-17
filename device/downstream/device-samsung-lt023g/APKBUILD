@@ -2,15 +2,15 @@
 pkgname=device-samsung-lt023g
 pkgdesc="Galaxy Tab 3 7.0"
 pkgver=3
-pkgrel=1
+pkgrel=2
 url="https://postmarketos.org"
 license="MIT"
 arch="armv7"
 options="!check !archcheck"
 depends="linux-samsung-lt023g mkbootimg postmarketos-base"
-makedepends="devicepkg-dev"
+makedepends="devicepkg-dev sed zstd linux-firmware-mrvl"
 source="deviceinfo device-ssp.start HiFi.conf emei-dkb-hifi.conf"
-subpackages="$pkgname-audio"
+subpackages="$pkgname-audio $pkgname-rawfirmware-mrvl:rawfirmware"
 
 build() {
 	devicepkg_build $startdir $pkgname
@@ -38,6 +38,52 @@ audio() {
 
 	amove usr/share/alsa/ucm2/conf.d/emei-dkb-hifi/emei-dkb-hifi.conf
 	amove usr/share/alsa/ucm2/conf.d/emei-dkb-hifi/HiFi.conf
+}
+
+rawfirmware() {
+	local f f2
+	install_if="$pkgname=$pkgver-r$pkgrel linux-firmware-mrvl linux-firmware-libertas"
+	replaces="linux-firmware-mrvl"
+	depends="linux-firmware-libertas"
+	makedepends="sed zstd linux-firmware-mrvl"
+
+	[[ "$subpkgdir" =~ "~" ]] && {
+		echo "Error: unable to handle paths with literal tilde(~): $subpkgdir" >&2
+		return 1
+	}
+
+	# copy from existing linux-firmware-mrvl package files
+	mkdir -p "$subpkgdir"/lib/firmware/ || return $?
+	cp -a -t "$subpkgdir"/lib/firmware/ /lib/firmware/mrvl || return $?
+
+	cd "$subpkgdir"/lib/firmware/mrvl/ || return $?
+
+	# move some symlinks out of the way so unzstd doesn't complain
+	for f in sd8688*.bin.zst ; do
+		mv "$f" "$f.tmp"
+	done
+
+	# expand the firmware images, removing original versions
+	unzstd *.bin.zst --force || return $?
+
+	# restore moved symlinks
+	for f in sd8688*.bin.zst.tmp ; do
+		f2=$( basename "$f" '.tmp' )
+		mv "$f" "$f2"
+	done
+
+	# prepare Marvell BT/WiFi firmware initramfs list
+	mkdir -p "$subpkgdir"/usr/share/mkinitfs/files-extra/
+	find "$subpkgdir"/lib/firmware/mrvl/ -type f -iname '*.bin' \
+		| sed -r "s~^$subpkgdir(/lib/firmware)~\\1~g" \
+		> "$subpkgdir"/usr/share/mkinitfs/files-extra/30-mrvl-firmware \
+	|| return $?
+
+	# test that we have at least the known critical firmware copied over
+	grep -Eq \
+		'^/lib/firmware/mrvl/sd8787_uapsta.bin$' \
+		"$subpkgdir"/usr/share/mkinitfs/files-extra/30-mrvl-firmware \
+	|| return $?
 }
 
 sha512sums="
